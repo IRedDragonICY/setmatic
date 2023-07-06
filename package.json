@@ -1,0 +1,37 @@
+{
+  "name": "matdis-project",
+  "version": "0.0.1",
+  "description": "Kalkulator Himpunan",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IRedDragonICY/MATDIS-Project.git#main"
+  },
+  "author": "IRedDragonICY",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/IRedDragonICY/MATDIS-Project/issues"
+  },
+  "homepage": "https://github.com/IRedDragonICY/MATDIS-Project/tree/main#readme",
+  "devDependencies": {
+    "@electron-forge/cli": "^6.2.1",
+    "@electron-forge/maker-deb": "^6.2.1",
+    "@electron-forge/maker-dmg": "^6.2.1",
+    "@electron-forge/maker-rpm": "^6.2.1",
+    "@electron-forge/maker-squirrel": "^6.2.1",
+    "@electron-forge/maker-zip": "^6.2.1",
+    "@electron-forge/plugin-auto-unpack-natives": "^6.2.1",
+    "electron": "^14.2.9"
+  },
+  "dependencies": {
+    "audit": "^0.0.6",
+    "electron-squirrel-startup": "^1.0.0",
+    "fix": "^0.0.6"
+  }
+}

@@ -342,93 +342,103 @@
           }
 
           function shuntingYard(expression) {
-            let outputQueue = [];
-            let operatorStack = [];
-            let operators = {
-              "∩": { precedence: 2 },
-              "∪": { precedence: 2 },
-              "+": { precedence: 2 },
-              "-": { precedence: 2 },
-              "⊕": { precedence: 2 },
-              "'": { precedence: 3 },
-            };
+  let outputQueue = [];
+  let operatorStack = [];
+  let operators = {
+    "∩": { precedence: 2 },
+    "∪": { precedence: 2 },
+    "+": { precedence: 2 },
+    "-": { precedence: 2 },
+    "⊕": { precedence: 2 },
+    "'": { precedence: 3 },
+    "n": { precedence: 2 },
+    "u": { precedence: 2 },
+    "(": { precedence: 1 },
+    ")": { precedence: 1 },
+  };
 
-            expression = expression.replace(/\s+/g, "");
-            expression = expression.split(/([\+\-\∩\∪\⊕\(\)])/).filter(Boolean);
+  expression = expression.replace(/\s+/g, "");
+  expression = expression.split(/([\+\-\∩\∪\⊕\(\)nu])/).filter(Boolean);
 
-            expression.forEach((token) => {
-              if (token === "(") {
-                operatorStack.push(token);
-              } else if (token === ")") {
-                while (operatorStack[operatorStack.length - 1] !== "(") {
-                  outputQueue.push(operatorStack.pop());
-                }
-                operatorStack.pop();
-              } else if (token in operators) {
-                while (
-                  operatorStack.length > 0 &&
-                  operators[token].precedence <=
-                    operators[operatorStack[operatorStack.length - 1]]
-                      .precedence
-                ) {
-                  outputQueue.push(operatorStack.pop());
-                }
-                operatorStack.push(token);
-              } else {
-                outputQueue.push(token);
-              }
-            });
+  expression.forEach((token) => {
+    if (token === "(") {
+      operatorStack.push(token);
+    } else if (token === ")") {
+      while (operatorStack[operatorStack.length - 1] !== "(") {
+        outputQueue.push(operatorStack.pop());
+      }
+      operatorStack.pop();
+    } else if (token in operators) {
+      while (
+        operatorStack.length > 0 &&
+        operators[token].precedence <=
+          operators[operatorStack[operatorStack.length - 1]].precedence
+      ) {
+        outputQueue.push(operatorStack.pop());
+      }
+      operatorStack.push(token);
+    } else {
+      outputQueue.push(token);
+    }
+  });
 
-            while (operatorStack.length > 0) {
-              outputQueue.push(operatorStack.pop());
-            }
+  while (operatorStack.length > 0) {
+    outputQueue.push(operatorStack.pop());
+  }
 
-            return outputQueue;
-          }
+  return outputQueue;
+}
 
-          function evaluateExpression(expression) {
-            let stack = [];
-            let operations = shuntingYard(expression);
+function evaluateExpression(expression) {
+  let stack = [];
+  let operations = shuntingYard(expression);
 
-            operations.forEach((token) => {
-              if (token in sets) {
-                stack.push(sets[token]);
-              } else {
-                let [y, x] = [stack.pop(), stack.pop()];
-                switch (token) {
-                  case "∩":
-                    stack.push(intersection(x, y));
-                    break;
-                  case "∪":
-                    stack.push(union(x, y));
-                    break;
-                  case "+":
-                    stack.push(addition(x, y));
-                    break;
-                  case "-":
-                    stack.push(subtraction(x, y));
-                    break;
-                  case "⊕":
-                    stack.push(difference(x, y).concat(difference(y, x)));
-                    break;
-                  case "'":
-                    stack.push(
-                      Object.keys(sets)
-                        .filter((key) => key !== x)
-                        .reduce((acc, key) => [...acc, ...sets[key]], [])
-                    );
-                    break;
-                }
-              }
-            });
+  operations.forEach((token) => {
+    if (token in sets) {
+      stack.push(sets[token]);
+    } else {
+      let [y, x] = [stack.pop(), stack.pop()];
+      switch (token) {
+        case "∩":
+          stack.push(intersection(x, y));
+          break;
+        case "∪":
+          stack.push(union(x, y));
+          break;
+        case "+":
+          stack.push(addition(x, y));
+          break;
+        case "-":
+          stack.push(subtraction(x, y));
+          break;
+        case "⊕":
+          stack.push(difference(x, y).concat(difference(y, x)));
+          break;
+        case "'":
+          stack.push(
+            Object.keys(sets)
+              .filter((key) => key !== x)
+              .reduce((acc, key) => [...acc, ...sets[key]], [])
+          );
+          break;
+        case "n":
+          stack.push(intersection(x, y));
+          break;
+        case "u":
+          stack.push(union(x, y));
+          break;
+      }
+    }
+  });
 
-            return stack.pop();
-          }
+  return stack.pop();
+}
 
-          const operation = $(".set-operation").val();
-          let result = evaluateExpression(operation);
-          result.sort((a, b) => a - b);
-          $(".result").val(`{${result.join(",")}}`);
+const operation = $(".set-operation").val();
+let result = evaluateExpression(operation);
+result.sort((a, b) => a - b);
+$(".result").val(`{${result.join(",")}}`);
+
         });
       });
     </script>

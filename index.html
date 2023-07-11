@@ -340,46 +340,70 @@
             return a.filter((value) => !b.includes(value));
           }
 
-          const operation = $(".set-operation").val();
-          let result;
-          if (operation.length <= 1) {
-            result = sets[operation];
-          } else {
-            const operations = operation.split("");
-            result = sets[operations[0]];
-            for (let i = 1; i < operations.length; i += 2) {
-              const operator = operations[i];
-              const nextSet = sets[operations[i + 1]];
-              switch (operator) {
-                case "∩":
-                  result = intersection(result, nextSet);
-                  break;
-                case "∪":
-                  result = union(result, nextSet);
-                  break;
-                case "+":
-                  result = addition(result, nextSet);
-                  break;
-                case "-":
-                  result = subtraction(result, nextSet);
-                  break;
-                case "∆":
-                  result = difference(result, nextSet).concat(
-                    difference(nextSet, result)
-                  );
-                  break;
-                case "'":
-                  result = Object.keys(sets)
-                    .filter((key) => key !== operations[0])
-                    .reduce((acc, key) => [...acc, ...sets[key]], []);
-                  break;
-                default:
-                  result = [];
-                  break;
-              }
-            }
-          }
-          $(".result").val(`{${result.join(",")}}`);
+          function evaluateExpression(expression) {
+  let stack = [];
+  for (let i = 0; i < expression.length; i++) {
+    if (expression[i] !== ')') {
+      stack.push(expression[i]);
+    } else {
+      let subExpression = '';
+      while (stack[stack.length - 1] !== '(') {
+        subExpression = stack.pop() + subExpression;
+      }
+      stack.pop(); // remove the '('
+      if (subExpression.length === 1) {
+        stack.push(subExpression);
+      } else {
+        let subResult = evaluateSubExpression(subExpression);
+        stack.push(subResult);
+      }
+    }
+  }
+  return evaluateSubExpression(stack.join(''));
+}
+
+function evaluateSubExpression(subExpression) {
+  const operations = subExpression.split("");
+  let result = sets[operations[0]];
+  for (let i = 1; i < operations.length; i += 2) {
+    const operator = operations[i];
+    const nextSet = sets[operations[i + 1]];
+    switch (operator) {
+      case "∩":
+        result = intersection(result, nextSet);
+        break;
+      case "∪":
+        result = union(result, nextSet);
+        break;
+      case "+":
+        result = addition(result, nextSet);
+        break;
+      case "-":
+        result = subtraction(result, nextSet);
+        break;
+      case "∆":
+        result = difference(result, nextSet).concat(
+          difference(nextSet, result)
+        );
+        break;
+      case "'":
+        result = Object.keys(sets)
+          .filter((key) => key !== operations[0])
+          .reduce((acc, key) => [...acc, ...sets[key]], []);
+        break;
+      default:
+        result = [];
+        break;
+    }
+  }
+  return result;
+}
+
+const operation = $(".set-operation").val();
+let result = evaluateExpression(operation);
+$(".result").val(`{${result.join(",")}}`);
+
+
         });
       });
     </script>

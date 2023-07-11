@@ -24,7 +24,7 @@
         width: 30px;
         margin: 0 10px;
       }
-      .set input {
+      .set .set-input {
         margin: 0 10px;
       }
       .operations {
@@ -42,14 +42,14 @@
       <div class="set">
         <input type="text" placeholder="Char Himpunan" class="char-input" />
         <span>{</span>
-        <input type="text" placeholder="Isi Himpunan" />
+        <input type="text" placeholder="Isi Himpunan" class="set-input" />
         <span>}</span>
         <button class="removeSet">Hapus Himpunan</button>
       </div>
       <div class="set">
         <input type="text" placeholder="Char Himpunan" class="char-input" />
         <span>{</span>
-        <input type="text" placeholder="Isi Himpunan" />
+        <input type="text" placeholder="Isi Himpunan" class="set-input" />
         <span>}</span>
         <button class="removeSet">Hapus Himpunan</button>
       </div>
@@ -66,119 +66,46 @@
       <input type="text" placeholder="Result" />
     </div>
     <script>
-      $("#addSet").click(() => {
-        const set = $(
-          '<div class="set"><input type="text" placeholder="Char Himpunan" class="char-input"><span>{</span><input type="text" placeholder="Isi Himpunan"><span>}</span><button class="removeSet">Hapus Himpunan</button></div>'
-        );
-        $(".container").find("#addSet").before(set);
-        toggleRemoveButtons($(".removeSet"));
-      });
+      $(document).ready(() => {
+        $("#addSet").click(() => {
+          const set = $(`
+            <div class="set">
+              <input type="text" placeholder="Char Himpunan" class="char-input" />
+              <span>{</span>
+              <input type="text" placeholder="Isi Himpunan" class="set-input" />
+              <span>}</span>
+              <button class="removeSet">Hapus Himpunan</button>
+            </div>
+          `);
+          $(".container").find("#addSet").before(set);
+          toggleRemoveButtons($(".removeSet"));
+        });
 
-      function toggleRemoveButtons(removeButtons) {
-        if (removeButtons.length > 2) {
-          removeButtons.each((index, button) => {
-            $(button).css("display", "block");
-            $(button).click(() => {
-              $(button).parent().remove();
-              toggleRemoveButtons($(".removeSet"));
+        function toggleRemoveButtons(removeButtons) {
+          if (removeButtons.length > 2) {
+            removeButtons.each((index, button) => {
+              $(button).css("display", "block");
+              $(button).click(() => {
+                $(button).parent().remove();
+                toggleRemoveButtons($(".removeSet"));
+              });
             });
-          });
-        } else {
-          removeButtons.each((index, button) => {
-            $(button).css("display", "none");
-          });
-        }
-      }
-      toggleRemoveButtons($(".removeSet"));
-
-      // jika klik tombol intersection maka akan muncul tulisan n
-      $("#intersection").click(() => {
-        const operation = $("#intersection").text();
-        const input = $('input[placeholder="Set-Operation"]');
-        input.val(input.val() + operation);
-      });
-      // jika klik tombol union maka akan muncul tulisan u
-      $("#union").click(() => {
-        const operation = $("#union").text();
-        const input = $('input[placeholder="Set-Operation"]');
-        input.val(input.val() + operation);
-      });
-      // jika klik tombol difference maka akan muncul tulisan -
-      $("#difference").click(() => {
-        const operation = $("#difference").text();
-        const input = $('input[placeholder="Set-Operation"]');
-        input.val(input.val() + operation);
-      });
-      // jika klik tombol complement maka akan muncul tulisan c
-      $("#complement").click(() => {
-        const operation = $("#complement").text();
-        const input = $('input[placeholder="Set-Operation"]');
-        input.val(input.val() + operation);
-      });
-      // jika klik tombol symmetricDifference maka akan muncul tulisan Δ
-      $("#symmetricDifference").click(() => {
-        const operation = $("#symmetricDifference").text();
-        const input = $('input[placeholder="Set-Operation"]');
-        input.val(input.val() + operation);
-      });
-
-      // Operation
-      // membuat fungsi-fungsi terlebih dahulu untuk memudahkan proses
-      const intersection = (a, b) => {
-        return a.filter((value) => b.includes(value));
-      };
-      const union = (a, b) => {
-        return [...new Set([...a, ...b])];
-      };
-      const difference = (a, b) => {
-        return a.filter((value) => !b.includes(value));
-      };
-      const complement = (a, b) => {
-        return a.filter((value) => !b.includes(value));
-      };
-      const symmetricDifference = (a, b) => {
-        return [...new Set([...a, ...b])].filter(
-          (value) => !a.includes(value) || !b.includes(value)
-        );
-      };
-      // operation untuk menghitung
-      // mengambil dari string inputan
-      // mengambil char dari set
-      const calculate = () => {
-        const input = $('input[placeholder="Set-Operation"]').val();
-        const sets = $(".set input[type='text']").map((index, input) =>
-          $(input).val().split(",")
-        );
-        const chars = $(".set .char-input").map((index, input) => $(input).val());
-        const operations = input.split("");
-        let result = sets[0];
-        for (let i = 0; i < operations.length; i++) {
-          const operation = operations[i];
-          const set = sets[i + 1];
-          switch (operation) {
-            case "∩":
-              result = intersection(result, set);
-              break;
-            case "∪":
-              result = union(result, set);
-              break;
-            case "-":
-              result = difference(result, set);
-              break;
-            case "c":
-              result = complement(result, set);
-              break;
-            case "Δ":
-              result = symmetricDifference(result, set);
-              break;
-            default:
-              break;
+          } else {
+            removeButtons.each((index, button) => {
+              $(button).css("display", "none");
+            });
           }
         }
-        const resultString = `{${result.join(",")}}`;
-        $('input[placeholder="Result"]').val(resultString);
-      };
-      $("#calculate").click(calculate);
+        toggleRemoveButtons($(".removeSet"));
+
+        $("#intersection, #union, #difference, #complement, #symmetricDifference").click(function() {
+  const operation = $(this).text();
+  const input = $('input[placeholder="Set-Operation"]'); 
+  input.val(input.val() + operation);
+});
+      });
+
+
     </script>
   </body>
 </html>

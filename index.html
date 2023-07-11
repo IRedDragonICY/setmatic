@@ -5,15 +5,20 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="./lib/js/jquery-3.7.0.min.js"></script>
-    <link rel="stylesheet" href="./lib/CSS/fontawesome-5.15.4.css" />
+    <href rel="stylesheet" href="./lib/CSS/fontawesome.css"></href>
+    <script src="./lib/js/font-awesome.js"></script>
     <style>
-      .container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
+      body {
+        background-color: #f5f5f5;
         font-family: Arial, sans-serif;
+      }
+      .container {
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       }
       .set {
         display: flex;
@@ -23,9 +28,48 @@
       .set .char-input {
         width: 30px;
         margin: 0 10px;
+        border: none;
+        border-bottom: 1px solid #ccc;
+        font-size: 16px;
+        padding: 5px;
+        text-align: center;
       }
       .set .set-input {
         margin: 0 10px;
+        border: none;
+        border-bottom: 1px solid #ccc;
+        font-size: 16px;
+        padding: 5px;
+      }
+
+      .set button:hover {
+        color: #333;
+      }
+      .removeSet {
+        background-color: #ff4d4d;
+        border: none;
+
+        color: #ffffff;
+        font-size: 16px;
+        cursor: pointer;
+        padding: 5px 10px;
+        border-radius: 5px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      }
+      .removeSet:hover {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      }
+      .removeSet i {
+        margin-right: 5px;
+      }
+      .removeSet span {
+        display: none;
+      }
+      .removeSet:hover span {
+        display: inline;
+      }
+      .removeSet:hover i {
+        display: none;
       }
       .operations {
         display: flex;
@@ -33,7 +77,50 @@
         margin-bottom: 10px;
       }
       .operations button {
+        background-color: #fff;
+        border: none;
+        color: #999;
+        font-size: 24px;
+        cursor: pointer;
         margin: 0 10px;
+        padding: 5px 10px;
+        border-radius: 5px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      }
+      .operations button:hover {
+        color: #333;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      }
+      .set-operation {
+        width: 100%;
+        margin-bottom: 10px;
+        border: none;
+        border-bottom: 1px solid #ccc;
+        font-size: 16px;
+        padding: 5px;
+      }
+      .result {
+        width: 100%;
+        margin-bottom: 10px;
+        border: none;
+        border-bottom: 1px solid #ccc;
+        font-size: 16px;
+        padding: 5px;
+        text-align: center;
+      }
+      button {
+        background-color: #007acc;
+        border: none;
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+        padding: 10px 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      }
+      button:hover {
+        background-color: #0062a3;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
       }
     </style>
   </head>
@@ -48,7 +135,10 @@
         />
         <span>{</span>
         <input type="text" placeholder="Isi Himpunan" class="set-input" />
-        <span>}</span> <button class="removeSet">Hapus Himpunan</button>
+        <span>}</span
+        ><button class="removeSet">
+          <i class="fa fa-trash" aria-hidden="true"></i>
+        </button>
       </div>
       <div class="set">
         <input
@@ -59,12 +149,17 @@
         />
         <span>{</span>
         <input type="text" placeholder="Isi Himpunan" class="set-input" />
-        <span>}</span> <button class="removeSet">Hapus Himpunan</button>
+        <span>}</span>
+        <button class="removeSet">
+          <i class="fa fa-trash" aria-hidden="true"></i>
+        </button>
       </div>
       <button id="addSet">Tambah Himpunan</button>
       <div class="operations">
         <button id="intersection">&#8745;</button>
         <button id="union">&#8746;</button>
+        <button id="addition">+</button>
+        <button id="subtraction">-</button>
         <button id="difference">&#8726;</button>
         <button id="complement">&#8705;</button>
         <button id="symmetricDifference">&#916;</button>
@@ -77,7 +172,7 @@
       $(document).ready(() => {
         $("#addSet").click(() => {
           const set = $(
-            ` <div class="set"> <input type="text" placeholder="Char Himpunan" class="char-input" maxlength="1"/> <span>{</span> <input type="text" placeholder="Isi Himpunan" class="set-input" /> <span>}</span> <button class="removeSet">Hapus Himpunan</button> </div> `
+            ` <div class="set"> <input type="text" placeholder="Char Himpunan" class="char-input" maxlength="1"/> <span>{</span> <input type="text" placeholder="Isi Himpunan" class="set-input" /> <span>}</span> <button class="removeSet"><i class="fa fa-trash" aria-hidden="true"></i></button> </div> `
           );
           $(".container").find("#addSet").before(set);
           toggleRemoveButtons($(".removeSet"));
@@ -103,7 +198,7 @@
 
         $(document).on(
           "click",
-          "#intersection, #union, #difference, #complement, #symmetricDifference",
+          "#intersection, #union, #addition, #subtraction, #difference, #complement, #symmetricDifference",
           function () {
             const operation = $(this).text();
             const input = $(".set-operation");
@@ -185,6 +280,62 @@
             return multiSetResult;
           }
 
+          function addition(a, b) {
+            const multiSet = {};
+            a.forEach((value) => {
+              if (multiSet[value]) {
+                multiSet[value]++;
+              } else {
+                multiSet[value] = 1;
+              }
+            });
+            b.forEach((value) => {
+              if (multiSet[value]) {
+                multiSet[value] += b.filter((x) => x === value).length;
+              } else {
+                multiSet[value] = b.filter((x) => x === value).length;
+              }
+            });
+            const multiSetResult = Object.entries(multiSet).reduce(
+              (acc, [value, count]) => {
+                for (let i = 0; i < count; i++) {
+                  acc.push(Number(value));
+                }
+                return acc;
+              },
+              []
+            );
+            return multiSetResult;
+          }
+
+          function subtraction(a, b) {
+            const multiSet = {};
+            a.forEach((value) => {
+              if (multiSet[value]) {
+                multiSet[value]++;
+              } else {
+                multiSet[value] = 1;
+              }
+            });
+            b.forEach((value) => {
+              if (multiSet[value]) {
+                multiSet[value] -= b.filter((x) => x === value).length;
+              } else {
+                multiSet[value] = -b.filter((x) => x === value).length;
+              }
+            });
+            const multiSetResult = Object.entries(multiSet).reduce(
+              (acc, [value, count]) => {
+                for (let i = 0; i < count; i++) {
+                  acc.push(Number(value));
+                }
+                return acc;
+              },
+              []
+            );
+            return multiSetResult;
+          }
+
           function difference(a, b) {
             return a.filter((value) => !b.includes(value));
           }
@@ -206,13 +357,16 @@
                 case "∪":
                   result = union(result, nextSet);
                   break;
+                case "+":
+                  result = addition(result, nextSet);
+                  break;
+                case "-":
+                  result = subtraction(result, nextSet);
+                  break;
                 case "∆":
                   result = difference(result, nextSet).concat(
                     difference(nextSet, result)
                   );
-                  break;
-                case "-":
-                  result = difference(result, nextSet);
                   break;
                 case "'":
                   result = Object.keys(sets)

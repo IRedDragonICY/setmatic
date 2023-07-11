@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/x-icon" href="./lib/imgs/icon/icon.ico" />
     <script src="./lib/js/jquery-3.7.0.min.js"></script>
-    <href rel="stylesheet" href="./lib/CSS/fontawesome.css"></href>
     <script src="./lib/js/font-awesome.js"></script>
+    <href rel="stylesheet" href="./lib/CSS/fontawesome.css"></href>
     <style>
       body {
         background-color: #f5f5f5;
@@ -165,6 +165,7 @@
         <button id="symmetricDifference">&#8853;</button>
         <button id="addition">+</button>
         <button id="subtraction">-</button>
+        <button id="cartesianProduct">&#215;</button>
         <button id="difference">&#8726;</button>
         <button id="complement">&#8705;</button>
       </div>
@@ -202,7 +203,7 @@
 
         $(document).on(
           "click",
-          "#intersection, #union, #addition, #subtraction, #difference, #complement, #symmetricDifference",
+          "#intersection, #union, #addition, #symmetricDifference, #subtraction, #difference, #cartesianProduct, #complement",
           function () {
             const operation = $(this).text();
             const input = $(".set-operation");
@@ -341,6 +342,16 @@
             return multiSetResult;
           }
 
+          function cartesianProduct(a, b) {
+            const result = [];
+            a.forEach((aValue) => {
+              b.forEach((bValue) => {
+                result.push([aValue, bValue]);
+              });
+            });
+            return result;
+          }  
+
           function difference(a, b) {
             return a.filter((value) => !b.includes(value));
           }
@@ -357,13 +368,14 @@
               "'": { precedence: 3 },
               n: { precedence: 2 },
               u: { precedence: 2 },
+              "×": { precedence: 2 },
               "(": { precedence: 1 },
               ")": { precedence: 1 },
             };
 
             expression = expression.replace(/\s+/g, "");
             expression = expression
-              .split(/([\+\-\∩\∪\⊕\(\)nu])/)
+              .split(/([\+\-\∩\∪\⊕\×\(\)nu])/)
               .filter(Boolean);
 
             expression.forEach((token) => {
@@ -420,6 +432,9 @@
                     break;
                   case "⊕":
                     stack.push(difference(x, y).concat(difference(y, x)));
+                    break;
+                  case "×":
+                    stack.push(cartesianProduct(x, y));
                     break;
                   case "'":
                     stack.push(

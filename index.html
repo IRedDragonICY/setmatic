@@ -98,14 +98,63 @@
         }
         toggleRemoveButtons($(".removeSet"));
 
-        $("#intersection, #union, #difference, #complement, #symmetricDifference").click(function() {
-  const operation = $(this).text();
-  const input = $('input[placeholder="Set-Operation"]'); 
-  input.val(input.val() + operation);
+        $(
+          "#intersection, #union, #difference, #complement, #symmetricDifference"
+        ).click(function () {
+          const operation = $(this).text();
+          const input = $('input[placeholder="Set-Operation"]');
+          input.val(input.val() + operation);
+        });
+        // mencoba mengambil data dari input, misalkan char-input = A, set-input = 1,2,3
+        // maka hasilnya adalah A = {1,2,3}
+        // apabila Set-Operation = A, maka hasilnya adalah {1,2,3}
+        $("#calculate").click(() => {
+          const sets = {};
+          $(".set").each((index, set) => {
+            const char = $(set).find(".char-input").val();
+            const values = $(set).find(".set-input").val().split(",");
+            sets[char] = values.map(Number);
+          });
+          const operation = $('input[placeholder="Set-Operation"]').val();
+          let result;
+  if (operation.length <= 1) {
+    result = sets[operation];
+  } else {
+    // misalnya user memasuki input A dan B dan melakukan operasi A<operasi>B
+    // maka akan menghasilkan operasi dari A dan B
+    const [first, operator, second] = operation.split("");
+    const firstSet = sets[first];
+    const secondSet = sets[second];
+    switch (operator) {
+      case "∩":
+        result = firstSet.filter((value) => secondSet.includes(value));
+        break;
+      case "∪":
+        result = [...firstSet, ...secondSet];
+        break;
+      case "∆":
+        result = [
+          ...firstSet.filter((value) => !secondSet.includes(value)),
+          ...secondSet.filter((value) => !firstSet.includes(value)),
+        ];
+        break;
+      case "-":
+        result = firstSet.filter((value) => !secondSet.includes(value));
+        break;
+      case "'":
+        result = Object.keys(sets)
+          .filter((key) => key !== first)
+          .reduce((acc, key) => [...acc, ...sets[key]], []);
+        break;
+      default:
+        result = [];
+        break;
+    }
+    
+  }
+  $('input[placeholder="Result"]').val(`{${[...result].join(",")}}`);
 });
       });
-
-
     </script>
   </body>
 </html>

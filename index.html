@@ -212,107 +212,120 @@
         );
 
         $("#calculate").click(() => {
-          const sets = {};
-          $(".set").each((index, set) => {
-            const char = $(set).find(".char-input").val();
-            const values = $(set).find(".set-input").val().split(",");
-            sets[char] = values.map(Number).sort((a, b) => a - b);
-          });
+  const sets = {};
+  $(".set").each((index, set) => {
+    const char = $(set).find(".char-input").val();
+    const values = $(set).find(".set-input").val().split(",");
+    if (values.length === 1) {
+      sets[char] = [String(values[0])];
+    } else {
+      const setValues = values.map((value) => {
+        const trimmedValue = value.trim();
+        if (trimmedValue.startsWith("(") && trimmedValue.endsWith(")")) {
+          const pairValues = trimmedValue.substring(1, trimmedValue.length - 1).split(",");
+          return [String(pairValues[0]), String(pairValues[1])];
+        } else {
+          return String(trimmedValue);
+        }
+      });
+      sets[char] = setValues;
+    }
+  });
 
-          function intersection(a, b) {
-            let result = [];
-            a.forEach((value) => {
-              const minCount = Math.min(
-                a.filter((x) => x === value).length,
-                b.filter((x) => x === value).length
-              );
-              for (let i = 0; i < minCount; i++) {
-                result.push(value);
-              }
-            });
-            const multiSet = {};
-            result.forEach((value) => {
-              if (multiSet[value]) {
-                multiSet[value]++;
-              } else {
-                multiSet[value] = 1;
-              }
-            });
-            const multiSetResult = Object.entries(multiSet).reduce(
-              (acc, [value, count]) => {
-                const minCount = Math.min(
-                  a.filter((x) => x === Number(value)).length,
-                  b.filter((x) => x === Number(value)).length
-                );
-                for (let i = 0; i < minCount; i++) {
-                  acc.push(Number(value));
-                }
-                return acc;
-              },
-              []
-            );
-            return multiSetResult;
-          }
+function intersection(a, b) {
+  let result = [];
+  a.forEach((value) => {
+    const minCount = Math.min(
+      a.filter((x) => x === value).length,
+      b.filter((x) => x === value).length
+    );
+    for (let i = 0; i < minCount; i++) {
+      result.push(value);
+    }
+  });
+  const multiSet = {};
+  result.forEach((value) => {
+    if (multiSet[value]) {
+      multiSet[value]++;
+    } else {
+      multiSet[value] = 1;
+    }
+  });
+  const multiSetResult = Object.entries(multiSet).reduce(
+    (acc, [value, count]) => {
+      const minCount = Math.min(
+        a.filter((x) => x === String(value)).length,
+        b.filter((x) => x === String(value)).length
+      );
+      for (let i = 0; i < minCount; i++) {
+        acc.push(String(value));
+      }
+      return acc;
+    },
+    []
+  );
+  return multiSetResult;
+}
 
-          function union(a, b) {
-            const multiSet = {};
-            a.forEach((value) => {
-              if (multiSet[value]) {
-                multiSet[value]++;
-              } else {
-                multiSet[value] = 1;
-              }
-            });
-            b.forEach((value) => {
-              if (multiSet[value]) {
-                multiSet[value] = Math.max(
-                  multiSet[value],
-                  b.filter((x) => x === value).length
-                );
-              } else {
-                multiSet[value] = b.filter((x) => x === value).length;
-              }
-            });
-            const multiSetResult = Object.entries(multiSet).reduce(
-              (acc, [value, count]) => {
-                for (let i = 0; i < count; i++) {
-                  acc.push(Number(value));
-                }
-                return acc;
-              },
-              []
-            );
-            return multiSetResult;
-          }
+function union(a, b) {
+  const multiSet = {};
+  a.forEach((value) => {
+    if (multiSet[value]) {
+      multiSet[value]++;
+    } else {
+      multiSet[value] = 1;
+    }
+  });
+  b.forEach((value) => {
+    if (multiSet[value]) {
+      multiSet[value] = Math.max(
+        multiSet[value],
+        b.filter((x) => x === value).length
+      );
+    } else {
+      multiSet[value] = b.filter((x) => x === value).length;
+    }
+  });
+  const multiSetResult = Object.entries(multiSet).reduce(
+    (acc, [value, count]) => {
+      for (let i = 0; i < count; i++) {
+        acc.push(String(value));
+      }
+      return acc;
+    },
+    []
+  );
+  return multiSetResult;
+}
 
           function addition(a, b) {
-            const multiSet = {};
+  const multiSet = {};
 
-            a.forEach((value) => {
-              if (multiSet[value]) {
-                multiSet[value]++;
-              } else {
-                multiSet[value] = 1;
-              }
-            });
+  a.forEach((value) => {
+    if (multiSet[value]) {
+      multiSet[value]++;
+    } else {
+      multiSet[value] = 1;
+    }
+  });
 
-            b.forEach((value) => {
-              if (multiSet[value]) {
-                multiSet[value]++;
-              } else {
-                multiSet[value] = 1;
-              }
-            });
+  b.forEach((value) => {
+    if (multiSet[value]) {
+      multiSet[value]++;
+    } else {
+      multiSet[value] = 1;
+    }
+  });
 
-            const multiSetResult = [];
-            Object.entries(multiSet).forEach(([value, count]) => {
-              for (let i = 0; i < count; i++) {
-                multiSetResult.push(Number(value));
-              }
-            });
+  const multiSetResult = [];
+  Object.entries(multiSet).forEach(([value, count]) => {
+    for (let i = 0; i < count; i++) {
+      multiSetResult.push(String(value));
+    }
+  });
 
-            return multiSetResult;
-          }
+  return multiSetResult;
+}
 
           function subtraction(a, b) {
             const multiSet = {};
@@ -333,7 +346,7 @@
             const multiSetResult = Object.entries(multiSet).reduce(
               (acc, [value, count]) => {
                 for (let i = 0; i < count; i++) {
-                  acc.push(Number(value));
+                  acc.push(String(value));
                 }
                 return acc;
               },
@@ -343,15 +356,14 @@
           }
 
           function cartesianProduct(a, b) {
-            const result = [];
-            a.forEach((aValue) => {
-              b.forEach((bValue) => {
-                result.push([aValue, bValue]);
-              });
-            });
-            return result;
-          }  
-
+  const result = [];
+  a.forEach((aValue) => {
+    b.forEach((bValue) => {
+      result.push(`(${aValue},${bValue})`);
+    });
+  });
+  return result;
+}
           function difference(a, b) {
             return a.filter((value) => !b.includes(value));
           }
@@ -452,10 +464,8 @@
                 }
               }
             });
-
             return stack.pop();
           }
-
           const operation = $(".set-operation").val();
           let result = evaluateExpression(operation);
           result.sort((a, b) => a - b);

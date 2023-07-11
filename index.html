@@ -158,11 +158,11 @@
       <div class="operations">
         <button id="intersection">&#8745;</button>
         <button id="union">&#8746;</button>
+        <button id="symmetricDifference">&#8853;</button>
         <button id="addition">+</button>
         <button id="subtraction">-</button>
         <button id="difference">&#8726;</button>
         <button id="complement">&#8705;</button>
-        <button id="symmetricDifference">&#916;</button>
       </div>
       <input type="text" placeholder="Set-Operation" class="set-operation" />
       <button id="calculate">Hitung</button>
@@ -282,6 +282,7 @@
 
           function addition(a, b) {
             const multiSet = {};
+
             a.forEach((value) => {
               if (multiSet[value]) {
                 multiSet[value]++;
@@ -289,22 +290,22 @@
                 multiSet[value] = 1;
               }
             });
+
             b.forEach((value) => {
               if (multiSet[value]) {
-                multiSet[value] += b.filter((x) => x === value).length;
+                multiSet[value]++;
               } else {
-                multiSet[value] = b.filter((x) => x === value).length;
+                multiSet[value] = 1;
               }
             });
-            const multiSetResult = Object.entries(multiSet).reduce(
-              (acc, [value, count]) => {
-                for (let i = 0; i < count; i++) {
-                  acc.push(Number(value));
-                }
-                return acc;
-              },
-              []
-            );
+
+            const multiSetResult = [];
+            Object.entries(multiSet).forEach(([value, count]) => {
+              for (let i = 0; i < count; i++) {
+                multiSetResult.push(Number(value));
+              }
+            });
+
             return multiSetResult;
           }
 
@@ -341,69 +342,70 @@
           }
 
           function evaluateExpression(expression) {
-  let stack = [];
-  for (let i = 0; i < expression.length; i++) {
-    if (expression[i] !== ')') {
-      stack.push(expression[i]);
-    } else {
-      let subExpression = '';
-      while (stack[stack.length - 1] !== '(') {
-        subExpression = stack.pop() + subExpression;
-      }
-      stack.pop(); // remove the '('
-      if (subExpression.length === 1) {
-        stack.push(subExpression);
-      } else {
-        let subResult = evaluateSubExpression(subExpression);
-        stack.push(subResult);
-      }
-    }
-  }
-  return evaluateSubExpression(stack.join(''));
-}
+            let stack = [];
+            for (let i = 0; i < expression.length; i++) {
+              if (expression[i] !== ")") {
+                stack.push(expression[i]);
+              } else {
+                let subExpression = "";
+                while (stack[stack.length - 1] !== "(") {
+                  subExpression = stack.pop() + subExpression;
+                }
+                stack.pop(); // remove the '('
+                if (subExpression.length === 1) {
+                  stack.push(subExpression);
+                } else {
+                  let subResult = evaluateSubExpression(subExpression);
+                  stack.push(subResult);
+                }
+              }
+            }
+            return evaluateSubExpression(stack.join(""));
+          }
 
-function evaluateSubExpression(subExpression) {
-  const operations = subExpression.split("");
-  let result = sets[operations[0]];
-  for (let i = 1; i < operations.length; i += 2) {
-    const operator = operations[i];
-    const nextSet = sets[operations[i + 1]];
-    switch (operator) {
-      case "∩":
-        result = intersection(result, nextSet);
-        break;
-      case "∪":
-        result = union(result, nextSet);
-        break;
-      case "+":
-        result = addition(result, nextSet);
-        break;
-      case "-":
-        result = subtraction(result, nextSet);
-        break;
-      case "∆":
-        result = difference(result, nextSet).concat(
-          difference(nextSet, result)
-        );
-        break;
-      case "'":
-        result = Object.keys(sets)
-          .filter((key) => key !== operations[0])
-          .reduce((acc, key) => [...acc, ...sets[key]], []);
-        break;
-      default:
-        result = [];
-        break;
-    }
-  }
-  return result;
-}
+          function evaluateSubExpression(subExpression) {
+            const operations = subExpression.split("");
+            let result = sets[operations[0]];
+            for (let i = 1; i < operations.length; i += 2) {
+              const operator = operations[i];
+              const nextSet = sets[operations[i + 1]];
+              switch (operator) {
+                case "∩":
+                  result = intersection(result, nextSet);
+                  break;
+                case "∪":
+                  result = union(result, nextSet);
+                  break;
+                case "":
+                  break;
+                case "+":
+                  result = addition(result, nextSet);
+                  break;
+                case "-":
+                  result = subtraction(result, nextSet);
+                  break;
+                case "⊕":
+                  result = difference(result, nextSet).concat(
+                    difference(nextSet, result)
+                  );
+                  break;
+                case "'":
+                  result = Object.keys(sets)
+                    .filter((key) => key !== operations[0])
+                    .reduce((acc, key) => [...acc, ...sets[key]], []);
+                  break;
+                default:
+                  result = [];
+                  break;
+              }
+            }
+            return result;
+          }
 
-const operation = $(".set-operation").val();
-let result = evaluateExpression(operation);
-$(".result").val(`{${result.join(",")}}`);
-
-
+          const operation = $(".set-operation").val();
+          let result = evaluateExpression(operation);
+          // result.sort((a, b) => a - b);
+          $(".result").val(`{${result.join(",")}}`);
         });
       });
     </script>

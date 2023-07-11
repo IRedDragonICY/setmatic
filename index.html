@@ -404,7 +404,7 @@
 
           const operation = $(".set-operation").val();
           let result = evaluateExpression(operation);
-          // result.sort((a, b) => a - b);
+          result.sort((a, b) => a - b);
           $(".result").val(`{${result.join(",")}}`);
         });
       });

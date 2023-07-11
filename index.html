@@ -45,6 +45,12 @@
         <input type="text" placeholder="Isi Himpunan" class="set-input" />
         <span>}</span> <button class="removeSet">Hapus Himpunan</button>
       </div>
+      <div class="set">
+        <input type="text" placeholder="Char Himpunan" class="char-input" />
+        <span>{</span>
+        <input type="text" placeholder="Isi Himpunan" class="set-input" />
+        <span>}</span> <button class="removeSet">Hapus Himpunan</button>
+      </div>
       <button id="addSet">Tambah Himpunan</button>
       <div class="operations">
         <button id="intersection">&#8745;</button>
@@ -104,28 +110,55 @@ $("#calculate").click(() => {
   });
 
   function intersection(a, b) {
-    let result = [];
-    a.forEach(value => {
-      const minCount = Math.min(a.filter(x => x === value).length, b.filter(x => x === value).length);
-      for (let i = 0; i < minCount; i++) {
-        result.push(value);
-      }
-    });
-    return [...new Set(result)];
-  }
+  let result = [];
+  a.forEach(value => {
+    const minCount = Math.min(a.filter(x => x === value).length, b.filter(x => x === value).length);
+    for (let i = 0; i < minCount; i++) {
+      result.push(value);
+    }
+  });
+  const multiSet = {};
+  result.forEach(value => {
+    if (multiSet[value]) {
+      multiSet[value]++;
+    } else {
+      multiSet[value] = 1;
+    }
+  });
+  const multiSetResult = Object.entries(multiSet).reduce((acc, [value, count]) => {
+    const minCount = Math.min(a.filter(x => x === Number(value)).length, b.filter(x => x === Number(value)).length);
+    for (let i = 0; i < minCount; i++) {
+      acc.push(Number(value));
+    }
+    return acc;
+  }, []);
+  return multiSetResult;
+}
 
-  function union(a, b) {
-    let result = a.slice();
-    b.forEach(value => {
-      const aCount = a.filter(x => x === value).length;
-      const bCount = b.filter(x => x === value).length;
-      const maxCount = Math.max(aCount, bCount);
-      for (let i = aCount; i < maxCount; i++) {
-        result.push(value);
-      }
-    });
-    return result;
-  }
+function union(a, b) {
+  const multiSet = {};
+  a.forEach(value => {
+    if (multiSet[value]) {
+      multiSet[value]++;
+    } else {
+      multiSet[value] = 1;
+    }
+  });
+  b.forEach(value => {
+    if (multiSet[value]) {
+      multiSet[value] = Math.max(multiSet[value], b.filter(x => x === value).length);
+    } else {
+      multiSet[value] = b.filter(x => x === value).length;
+    }
+  });
+  const multiSetResult = Object.entries(multiSet).reduce((acc, [value, count]) => {
+    for (let i = 0; i < count; i++) {
+      acc.push(Number(value));
+    }
+    return acc;
+  }, []);
+  return multiSetResult;
+}
 
   function difference(a, b) {
     return a.filter(value => !b.includes(value));

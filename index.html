@@ -168,7 +168,6 @@
         <button id="cartesianProduct">&#215;</button>
         <button id="difference">&#8726;</button>
         <button id="complement">&#xA7F2;</button>
-        
       </div>
       <input type="text" placeholder="Set-Operation" class="set-operation" />
       <button id="calculate">Hitung</button>
@@ -386,7 +385,7 @@
               n: { precedence: 2 },
               u: { precedence: 2 },
               "×": { precedence: 2 },
-              "ꟲ" : { precedence: 1 },
+              "ꟲ": { precedence: 1 },
               "(": { precedence: 1 },
               ")": { precedence: 1 },
             };
@@ -480,7 +479,6 @@
                     stack.push(cartesianProduct(x, y));
                     break;
                   case "ꟲ":
-                
                     break;
                   case "n":
                     stack.push(intersection(x, y));

@@ -1,583 +1,636 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Kalkulator Himpunan</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/x-icon" href="./lib/imgs/icon/icon.ico" />
-    <script src="./lib/js/jquery-3.7.0.min.js"></script>
-    <script src="./lib/js/font-awesome.js"></script>
-    <href rel="stylesheet" href="./lib/CSS/fontawesome.css"></href>
-    <style>
-      body {
-        background-color: #f5f5f5;
-        font-family: Arial, sans-serif;
-      }
-      .container {
-        max-width: 500px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #fff;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      }
-      .set {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-      }
 
-      .set .char-input {
-        width: 30px;
-        margin: 0 10px;
-        border: none;
-        border-bottom: 1px solid #ccc;
-        font-size: 16px;
-        padding: 5px;
-        text-align: center;
-      }
-      .set .set-input {
-        margin: 0 10px;
-        border: none;
-        border-bottom: 1px solid #ccc;
-        font-size: 16px;
-        padding: 5px;
-      }
+<head>
+  <title>Kalkulator Himpunan</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/x-icon" href="./lib/imgs/icon/icon.ico" />
+  <script src="./lib/js/jquery-3.7.0.min.js"></script>
+  <script src="./lib/js/font-awesome.js"></script>
+  <href rel="stylesheet" href="./lib/CSS/fontawesome.css"></href>
+  <style>
+    body {
+      background-color: #f5f5f5;
+      font-family: Arial, sans-serif;
+    }
 
-      .set button:hover {
-        color: #333;
-      }
-      .removeSet {
-        background-color: #ff4d4d;
-        border: none;
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
 
-        color: #ffffff;
-        font-size: 16px;
-        cursor: pointer;
-        padding: 5px 10px;
-        border-radius: 5px;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-      }
-      .removeSet:hover {
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-      }
-      .removeSet i {
-        margin-right: 5px;
-      }
-      .removeSet span {
-        display: none;
-      }
-      .removeSet:hover span {
-        display: inline;
-      }
-      .removeSet:hover i {
-        display: none;
-      }
-      .operations {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 10px;
-      }
-      .operations button {
-        background-color: #fff;
-        border: none;
-        color: #999;
-        font-size: 24px;
-        cursor: pointer;
-        margin: 0 10px;
-        padding: 5px 10px;
-        border-radius: 5px;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-      }
-      .operations button:hover {
-        color: #333;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-      }
-      .set-operation {
-        width: 100%;
-        margin-bottom: 10px;
-        border: none;
-        border-bottom: 1px solid #ccc;
-        font-size: 16px;
-        padding: 5px;
-      }
-      .result {
-        width: 100%;
-        margin-bottom: 10px;
-        border: none;
-        border-bottom: 1px solid #ccc;
-        font-size: 16px;
-        padding: 5px;
-        text-align: center;
-      }
-      button {
-        background-color: #007acc;
-        border: none;
-        color: #fff;
-        font-size: 16px;
-        cursor: pointer;
-        padding: 10px 20px;
-        border-radius: 5px;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-      }
-      button#addSet {
-        background-color: #4caf50;
-      }
-      button:hover {
-        background-color: #0062a3;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-      }
-      [data-title]:hover:after {
-        opacity: 1;
-        transition: all 0.1s ease 0.5s;
-        visibility: visible;
-      }
+    .set {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
 
-      [data-title]:after {
-        content: attr(data-title);
-        background-color: #ffffff;
-        color: #111;
-        font-size: 12px;
-        position: absolute;
-        padding: 1px 5px 2px 5px;
-        bottom: -1.6em;
-        left: 100%;
-        white-space: nowrap;
-        box-shadow: 1px 1px 3px #222222;
-        opacity: 0;
-        border: 1px solid #111111;
-        z-index: 99999;
-        visibility: hidden;
-        border-radius: 5px;
-      }
+    .set .char-input {
+      width: 30px;
+      margin: 0 10px;
+      border: none;
+      border-bottom: 1px solid #ccc;
+      font-size: 16px;
+      padding: 5px;
+      text-align: center;
+    }
 
-      [data-title] {
-        position: relative;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <div class="set">
-        <input
-          type="text"
-          placeholder="Char Himpunan"
-          class="char-input"
-          maxlength="1"
-          value="U"
-          readonly
-        />
-        <span>{</span>
-        <input
-          type="text"
-          placeholder="Himpunan Semesta"
-          class="set-input"
-          readonly
-        />
-        <span>}</span>
-      </div>
-      <div class="set">
-        <input
-          type="text"
-          placeholder="Char Himpunan"
-          class="char-input"
-          maxlength="1"
-        />
-        <span>{</span>
-        <input
-          type="textarea"
-          placeholder="Elemen Himpunan"
-          class="set-input"
-        />
-        <span>}</span
-        ><button class="removeSet">
-          <i class="fa fa-trash" aria-hidden="true"></i>
-        </button>
-      </div>
-      <div class="set">
-        <input
-          type="text"
-          placeholder="Char Himpunan"
-          class="char-input"
-          maxlength="1"
-        />
-        <span>{</span>
-        <input type="text" placeholder="Elemen Himpunan" class="set-input" />
-        <span>}</span>
-        <button class="removeSet">
-          <i class="fa fa-trash" aria-hidden="true"></i>
-        </button>
-      </div>
-      <button id="addSet"><i class="fas fa-plus"></i> Tambah Himpunan</button>
-      <div class="operations">
-        <button id="intersection" data-title="Intersection">&#8745;</button>
-        <button id="union" data-title="Union">&#8746;</button>
-        <button id="symmetricDifference" data-title="Symmetric Difference">
-          &#8853;
-        </button>
-        <button id="addition" data-title="Addition">+</button>
-        <button id="subtraction" data-title="Subtraction">-</button>
-        <button id="cartesianProduct" data-title="Cartesian Product">
-          &#215;
-        </button>
-        <button id="difference" data-title="Difference">&#8726;</button>
-        <button id="complement" data-title="Complement">&#xA7F2;</button>
-      </div>
-      <input type="text" placeholder="Set-Operation" class="set-operation" />
-      <button id="calculate">Hitung</button>
-      <input type="text" placeholder="Result" class="result" readonly />
+    .set .set-input {
+      margin: 0 10px;
+      border: none;
+      border-bottom: 1px solid #ccc;
+      font-size: 16px;
+      padding: 5px;
+    }
+
+    .set button:hover {
+      color: #333;
+    }
+
+    .removeSet {
+      background-color: #ff4d4d;
+      border: none;
+
+      color: #ffffff;
+      font-size: 16px;
+      cursor: pointer;
+      padding: 5px 10px;
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .removeSet:hover {
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .removeSet i {
+      margin-right: 5px;
+    }
+
+    .removeSet span {
+      display: none;
+    }
+
+    .removeSet:hover span {
+      display: inline;
+    }
+
+    .removeSet:hover i {
+      display: none;
+    }
+
+    .operations {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .operations button {
+      background-color: #fff;
+      border: none;
+      color: #999;
+      font-size: 24px;
+      cursor: pointer;
+      margin: 0 10px;
+      padding: 5px 10px;
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .operations button:hover {
+      color: #333;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .set-operation {
+      width: 100%;
+      margin-bottom: 10px;
+      border: none;
+      border-bottom: 1px solid #ccc;
+      font-size: 16px;
+      padding: 5px;
+    }
+
+    .result {
+      width: 100%;
+      margin-bottom: 10px;
+      border: none;
+      border-bottom: 1px solid #ccc;
+      font-size: 16px;
+      padding: 5px;
+      text-align: center;
+    }
+
+    button {
+      background-color: #007acc;
+      border: none;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      padding: 10px 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    button#addSet {
+      background-color: #4caf50;
+    }
+
+    button:hover {
+      background-color: #0062a3;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    [data-title]:hover:after {
+      opacity: 1;
+      transition: all 0.1s ease 0.5s;
+      visibility: visible;
+    }
+
+    [data-title]:after {
+      content: attr(data-title);
+      background-color: #ffffff;
+      color: #111;
+      font-size: 12px;
+      position: absolute;
+      padding: 1px 5px 2px 5px;
+      bottom: -1.6em;
+      left: 100%;
+      white-space: nowrap;
+      box-shadow: 1px 1px 3px #222222;
+      opacity: 0;
+      border: 1px solid #111111;
+      z-index: 99999;
+      visibility: hidden;
+      border-radius: 5px;
+    }
+
+    [data-title] {
+      position: relative;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="set">
+      <input type="text" placeholder="Char Himpunan" class="char-input" maxlength="1" value="U" readonly />
+      <span>{</span>
+      <input type="text" placeholder="Himpunan Semesta" class="set-input" readonly />
+      <span>}</span>
     </div>
-    <script>
-      $(document).ready(() => {
-        $("#addSet").click(() => {
-          const set = $(
-            ` <div class="set"> <input type="text" placeholder="Char Himpunan" class="char-input" maxlength="1"/> <span>{</span> <input type="text" placeholder="Elemen Himpunan" class="set-input" /> <span>}</span> <button class="removeSet"><i class="fa fa-trash" aria-hidden="true"></i></button> </div> `
-          );
-          $(".container").find("#addSet").before(set);
-          set.hide().slideDown(200);
-          toggleRemoveButtons($(".removeSet"));
-        });
-
-        function toggleRemoveButtons(removeButtons) {
-          if (removeButtons.length > 2) {
-            removeButtons.each((index, button) => {
-              $(button).css("display", "block");
-              $(button).click(() => {
-                $(button)
-                  .parent()
-                  .fadeOut(200, function () {
-                    $(this).remove();
-                    toggleRemoveButtons($(".removeSet"));
-                  });
-              });
-            });
-          } else {
-            removeButtons.each((index, button) => {
-              $(button).css("display", "none");
-            });
-          }
-        }
-        toggleRemoveButtons($(".removeSet"));
-
-        $(document).on("change input", ".set-input", () => {
-          const values = $(".set-input")
-            .not($(".set-input").first())
-            .map((index, input) => {
-              const value = $(input).val().trim();
-              if (!value) {
-                return null;
-              }
-              const set = value
-                .split(",")
-                .map((value) => String(value.trim()))
-                .filter((value) => value !== "")
-                .sort((a, b) => a - b);
-              return set;
-            })
-            .get()
-            .filter((value) => value !== null);
-          let set = []
-            .concat(...values)
-            .sort((a, b) => a - b)
-            .join(", ");
-          $(".set-input").first().val(set);
-        });
-        $(document).on(
-          "click",
-          "#intersection, #union, #addition, #symmetricDifference, #subtraction, #difference, #cartesianProduct, #complement",
-          function () {
-            const operation = $(this).text();
-            const input = $(".set-operation");
-            input.val(input.val() + operation);
-          }
+    <div class="set">
+      <input type="text" placeholder="Char Himpunan" class="char-input" maxlength="1" />
+      <span>{</span>
+      <input type="textarea" placeholder="Elemen Himpunan" class="set-input" />
+      <span>}</span><button class="removeSet">
+        <i class="fa fa-trash" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="set">
+      <input type="text" placeholder="Char Himpunan" class="char-input" maxlength="1" />
+      <span>{</span>
+      <input type="text" placeholder="Elemen Himpunan" class="set-input" />
+      <span>}</span>
+      <button class="removeSet">
+        <i class="fa fa-trash" aria-hidden="true"></i>
+      </button>
+    </div>
+    <button id="addSet"><i class="fas fa-plus"></i> Tambah Himpunan</button>
+    <div class="operations">
+      <button id="intersection" data-title="Intersection">&#8745;</button>
+      <button id="union" data-title="Union">&#8746;</button>
+      <button id="symmetricDifference" data-title="Symmetric Difference">&#8853;</button>
+      <button id="addition" data-title="Addition">+</button>
+      <button id="subtraction" data-title="Subtraction">-</button>
+      <button id="cartesianProduct" data-title="Cartesian Product">&#215;</button>
+      <button id="difference" data-title="Difference">&#8726;</button>
+      <button id="complement" data-title="Complement">&#xA7F2;</button>
+    </div>
+    <input type="text" placeholder="Set-Operation" class="set-operation" />
+    <button id="calculate">Hitung</button>
+    <input type="text" placeholder="Result" class="result" readonly />
+  </div>
+  <script>
+    $(document).ready(() => {
+      $("#addSet").click(() => {
+        const set = $(
+          ` <div class="set"> <input type="text" placeholder="Char Himpunan" class="char-input" maxlength="1"/> <span>{</span> <input type="text" placeholder="Elemen Himpunan" class="set-input" /> <span>}</span> <button class="removeSet"><i class="fa fa-trash" aria-hidden="true"></i></button> </div> `
         );
+        $(".container").find("#addSet").before(set);
+        set.hide().slideDown(200);
+        toggleRemoveButtons($(".removeSet"));
+      });
 
-        $("#calculate").click(() => {
-          const sets = {};
-          $(".set").each((index, set) => {
-            const char = $(set).find(".char-input").val();
-            const values = $(set).find(".set-input").val().split(",");
-            if (values.length === 1) {
-              sets[char] = [String(values[0])];
+      function toggleRemoveButtons(removeButtons) {
+        if (removeButtons.length > 2) {
+          removeButtons.each((index, button) => {
+            $(button).css("display", "block");
+            $(button).click(() => {
+              $(button)
+                .parent()
+                .fadeOut(200, function () {
+                  $(this).remove();
+                  toggleRemoveButtons($(".removeSet"));
+                });
+            });
+          });
+        } else {
+          removeButtons.each((index, button) => {
+            $(button).css("display", "none");
+          });
+        }
+      }
+      toggleRemoveButtons($(".removeSet"));
+
+      $(document).on("change input", ".set-input", () => {
+        const values = $(".set-input")
+          .not($(".set-input").first())
+          .map((index, input) => {
+            const value = $(input).val().trim();
+            if (!value) {
+              return null;
+            }
+            const set = value
+              .split(",")
+              .map((value) => String(value.trim()))
+              .filter((value) => value !== "")
+              .sort((a, b) => a - b);
+            return set;
+          })
+          .get()
+          .filter((value) => value !== null);
+        let set = []
+          .concat(...values)
+          .sort((a, b) => a - b)
+          .join(", ");
+        $(".set-input").first().val(set);
+      });
+      $(document).on(
+        "click",
+        "#intersection, #union, #addition, #symmetricDifference, #subtraction, #difference, #cartesianProduct, #complement",
+        function () {
+          const operation = $(this).text();
+          const input = $(".set-operation");
+          input.val(input.val() + operation);
+        }
+      );
+
+      $("#calculate").click(() => {
+        const sets = {};
+        $(".set").each((index, set) => {
+          const char = $(set).find(".char-input").val();
+          const values = $(set).find(".set-input").val().split(",");
+          if (values.length === 1) {
+            sets[char] = [String(values[0])];
+          } else {
+            const setValues = values.map((value) => {
+              const trimmedValue = value.trim();
+              if (
+                trimmedValue.startsWith("(") &&
+                trimmedValue.endsWith(")")
+              ) {
+                const pairValues = trimmedValue
+                  .substring(1, trimmedValue.length - 1)
+                  .split(",");
+                return [String(pairValues[0]), String(pairValues[1])];
+              } else {
+                return String(trimmedValue);
+              }
+            });
+            sets[char] = setValues;
+          }
+        });
+
+        function intersection(a, b) {
+          let result = [];
+          a.forEach((value) => {
+            const minCount = Math.min(
+              a.filter((x) => x === value).length,
+              b.filter((x) => x === value).length
+            );
+            for (let i = 0; i < minCount; i++) {
+              result.push(value);
+            }
+          });
+          const multiSet = {};
+          result.forEach((value) => {
+            if (multiSet[value]) {
+              multiSet[value]++;
             } else {
-              const setValues = values.map((value) => {
-                const trimmedValue = value.trim();
-                if (
-                  trimmedValue.startsWith("(") &&
-                  trimmedValue.endsWith(")")
-                ) {
-                  const pairValues = trimmedValue
-                    .substring(1, trimmedValue.length - 1)
-                    .split(",");
-                  return [String(pairValues[0]), String(pairValues[1])];
-                } else {
-                  return String(trimmedValue);
-                }
-              });
-              sets[char] = setValues;
+              multiSet[value] = 1;
+            }
+          });
+          const multiSetResult = Object.entries(multiSet).reduce(
+            (acc, [value, count]) => {
+              const minCount = Math.min(
+                a.filter((x) => x === String(value)).length,
+                b.filter((x) => x === String(value)).length
+              );
+              for (let i = 0; i < minCount; i++) {
+                acc.push(String(value));
+              }
+              return acc;
+            },
+            []
+          );
+          return multiSetResult;
+        }
+
+        function union(a, b) {
+          const multiSet = {};
+          a.forEach((value) => {
+            if (multiSet[value]) {
+              multiSet[value]++;
+            } else {
+              multiSet[value] = 1;
+            }
+          });
+          b.forEach((value) => {
+            if (multiSet[value]) {
+              multiSet[value] = Math.max(
+                multiSet[value],
+                b.filter((x) => x === value).length
+              );
+            } else {
+              multiSet[value] = b.filter((x) => x === value).length;
+            }
+          });
+          const multiSetResult = Object.entries(multiSet).reduce(
+            (acc, [value, count]) => {
+              for (let i = 0; i < count; i++) {
+                acc.push(String(value));
+              }
+              return acc;
+            },
+            []
+          );
+          return multiSetResult;
+        }
+
+        function addition(a, b) {
+          const multiSet = {};
+
+          a.forEach((value) => {
+            if (multiSet[value]) {
+              multiSet[value]++;
+            } else {
+              multiSet[value] = 1;
             }
           });
 
-          function intersection(a, b) {
-            let result = [];
-            a.forEach((value) => {
-              const minCount = Math.min(
-                a.filter((x) => x === value).length,
-                b.filter((x) => x === value).length
-              );
-              for (let i = 0; i < minCount; i++) {
-                result.push(value);
-              }
-            });
-            const multiSet = {};
-            result.forEach((value) => {
-              if (multiSet[value]) {
-                multiSet[value]++;
-              } else {
-                multiSet[value] = 1;
-              }
-            });
-            const multiSetResult = Object.entries(multiSet).reduce(
-              (acc, [value, count]) => {
-                const minCount = Math.min(
-                  a.filter((x) => x === String(value)).length,
-                  b.filter((x) => x === String(value)).length
-                );
-                for (let i = 0; i < minCount; i++) {
-                  acc.push(String(value));
-                }
-                return acc;
-              },
-              []
-            );
-            return multiSetResult;
-          }
-
-          function union(a, b) {
-            const multiSet = {};
-            a.forEach((value) => {
-              if (multiSet[value]) {
-                multiSet[value]++;
-              } else {
-                multiSet[value] = 1;
-              }
-            });
-            b.forEach((value) => {
-              if (multiSet[value]) {
-                multiSet[value] = Math.max(
-                  multiSet[value],
-                  b.filter((x) => x === value).length
-                );
-              } else {
-                multiSet[value] = b.filter((x) => x === value).length;
-              }
-            });
-            const multiSetResult = Object.entries(multiSet).reduce(
-              (acc, [value, count]) => {
-                for (let i = 0; i < count; i++) {
-                  acc.push(String(value));
-                }
-                return acc;
-              },
-              []
-            );
-            return multiSetResult;
-          }
-
-          function addition(a, b) {
-            const multiSet = {};
-
-            a.forEach((value) => {
-              if (multiSet[value]) {
-                multiSet[value]++;
-              } else {
-                multiSet[value] = 1;
-              }
-            });
-
-            b.forEach((value) => {
-              if (multiSet[value]) {
-                multiSet[value]++;
-              } else {
-                multiSet[value] = 1;
-              }
-            });
-
-            const multiSetResult = [];
-            Object.entries(multiSet).forEach(([value, count]) => {
-              for (let i = 0; i < count; i++) {
-                multiSetResult.push(String(value));
-              }
-            });
-
-            return multiSetResult;
-          }
-
-          function subtraction(a, b) {
-            const multiSet = {};
-            a.forEach((value) => {
-              if (multiSet[value]) {
-                multiSet[value]++;
-              } else {
-                multiSet[value] = 1;
-              }
-            });
-            b.forEach((value) => {
-              if (multiSet[value]) {
-                multiSet[value] -= b.filter((x) => x === value).length;
-              } else {
-                multiSet[value] = -b.filter((x) => x === value).length;
-              }
-            });
-            const multiSetResult = Object.entries(multiSet).reduce(
-              (acc, [value, count]) => {
-                for (let i = 0; i < count; i++) {
-                  acc.push(String(value));
-                }
-                return acc;
-              },
-              []
-            );
-            return multiSetResult;
-          }
-
-          function cartesianProduct(a, b) {
-            const result = [];
-            a.forEach((aValue) => {
-              b.forEach((bValue) => {
-                result.push(`(${aValue},${bValue})`);
-              });
-            });
-            return result;
-          }
-          function difference(a, b) {
-            return a.filter((value) => !b.includes(value));
-          }
-
-          function shuntingYard(expression) {
-            let outputQueue = [];
-            let operatorStack = [];
-            let operators = {
-              "∩": { precedence: 2 },
-              "∪": { precedence: 2 },
-              "+": { precedence: 2 },
-              "-": { precedence: 2 },
-              "⊕": { precedence: 2 },
-              n: { precedence: 2 },
-              u: { precedence: 2 },
-              "×": { precedence: 2 },
-              "ꟲ": { precedence: 1 },
-              "(": { precedence: 1 },
-              ")": { precedence: 1 },
-            };
-
-            expression = expression.replace(/\s+/g, "");
-            expression = expression
-              .split(/([\+\-\∩\∪\⊕\×\(\)nu])/)
-              .filter(Boolean);
-
-            expression.forEach((token) => {
-              if (token === "(") {
-                operatorStack.push(token);
-              } else if (token === ")") {
-                while (operatorStack[operatorStack.length - 1] !== "(") {
-                  outputQueue.push(operatorStack.pop());
-                }
-                operatorStack.pop();
-              } else if (token in operators) {
-                while (
-                  operatorStack.length > 0 &&
-                  operators[token].precedence <=
-                    operators[operatorStack[operatorStack.length - 1]]
-                      .precedence
-                ) {
-                  outputQueue.push(operatorStack.pop());
-                }
-                operatorStack.push(token);
-              } else {
-                outputQueue.push(token);
-              }
-            });
-
-            while (operatorStack.length > 0) {
-              outputQueue.push(operatorStack.pop());
+          b.forEach((value) => {
+            if (multiSet[value]) {
+              multiSet[value]++;
+            } else {
+              multiSet[value] = 1;
             }
+          });
 
-            return outputQueue;
-          }
+          const multiSetResult = [];
+          Object.entries(multiSet).forEach(([value, count]) => {
+            for (let i = 0; i < count; i++) {
+              multiSetResult.push(String(value));
+            }
+          });
+          return multiSetResult;
+        }
 
-          function evaluateExpression(expression) {
-            let stack = [];
-            let operations = shuntingYard(expression);
-
-            operations.forEach((token) => {
-              if (token in sets) {
-                stack.push(sets[token]);
-              } else {
-                let [y, x] = [stack.pop(), stack.pop()];
-                switch (token) {
-                  case "∩":
-                    stack.push(intersection(x, y));
-                    break;
-                  case "∪":
-                    stack.push(union(x, y));
-                    break;
-                  case "+":
-                    stack.push(addition(x, y));
-                    break;
-                  case "-":
-                    stack.push(subtraction(x, y));
-                    break;
-                  case "⊕":
-                    stack.push(difference(x, y).concat(difference(y, x)));
-                    break;
-                  case "×":
-                    x = x.map((value) => value.replace(/[\(\)]/g, ""));
-                    y = y.map((value) => value.replace(/[\(\)]/g, ""));
-                    if (x.length === 0 || y.length === 0) {
-                      stack.push([]);
-                      break;
-                    } else if (x.length === 1 && y.length === 1) {
-                      stack.push([`(${x},${y})`]);
-                      break;
-                    } else if (x.length === 1 && y.length > 1) {
-                      stack.push(y.map((value) => `(${x},${value})`));
-                      break;
-                    } else if (x.length > 1 && y.length === 1) {
-                      stack.push(x.map((value) => `(${value},${y})`));
-                      break;
-                    } else if (x.length > 1 && y.length > 1) {
-                      stack.push(
-                        x.reduce((acc, xValue) => {
-                          return [
-                            ...acc,
-                            ...y.map((yValue) => `(${xValue},${yValue})`),
-                          ];
-                        }, [])
-                      );
-                      break;
-                    }
-                    stack.push(cartesianProduct(x, y));
-                    break;
-                  case "ꟲ":
-                    break;
-                  case "n":
-                    stack.push(intersection(x, y));
-                    break;
-                  case "u":
-                    stack.push(union(x, y));
-                    break;
-                }
+        function subtraction(a, b) {
+          const multiSet = {};
+          a.forEach((value) => {
+            if (multiSet[value]) {
+              multiSet[value]++;
+            } else {
+              multiSet[value] = 1;
+            }
+          });
+          b.forEach((value) => {
+            if (multiSet[value]) {
+              multiSet[value] -= b.filter((x) => x === value).length;
+            } else {
+              multiSet[value] = -b.filter((x) => x === value).length;
+            }
+          });
+          const multiSetResult = Object.entries(multiSet).reduce(
+            (acc, [value, count]) => {
+              for (let i = 0; i < count; i++) {
+                acc.push(String(value));
               }
+              return acc;
+            },
+            []
+          );
+          return multiSetResult;
+        }
+
+        function cartesianProduct(a, b) {
+          const result = [];
+          a.forEach((aValue) => {
+            b.forEach((bValue) => {
+              result.push(`(${aValue},${bValue})`);
             });
-            return stack.pop();
+          });
+          return result;
+        }
+        function complement(a) {
+          const universal = document
+            .querySelector(".set-input")
+            .value.split(",")
+            .map((x) => x.trim());
+          return universal.filter((x) => !a.includes(x));
+        }
+
+        function difference(a, b) {
+          return a.filter((value) => !b.includes(value));
+        }
+
+        function shuntingYard(expression) {
+          let outputQueue = [];
+          let operatorStack = [];
+          let operators = {
+            "∩": { precedence: 2 },
+            "∪": { precedence: 2 },
+            "+": { precedence: 2 },
+            "-": { precedence: 2 },
+            "⊕": { precedence: 2 },
+            n: { precedence: 2 },
+            u: { precedence: 2 },
+            "×": { precedence: 2 },
+            "ꟲ": { precedence: 1 },
+            "(": { precedence: 1 },
+            ")": { precedence: 1 },
+          };
+
+          expression = expression.replace(/\s+/g, "");
+          expression = expression
+            .split(/([\+\-\∩\∪\⊕\×\(\)nuꟲ])/)
+            .filter(Boolean);
+
+          expression.forEach((token) => {
+            if (token === "(") {
+              operatorStack.push(token);
+            } else if (token === ")") {
+              while (operatorStack[operatorStack.length - 1] !== "(") {
+                outputQueue.push(operatorStack.pop());
+              }
+              operatorStack.pop();
+            } else if (token in operators) {
+              while (
+                operatorStack.length > 0 &&
+                operators[token].precedence <=
+                operators[operatorStack[operatorStack.length - 1]]
+                  .precedence
+              ) {
+                outputQueue.push(operatorStack.pop());
+              }
+              operatorStack.push(token);
+            } else {
+              outputQueue.push(token);
+            }
+          });
+
+          while (operatorStack.length > 0) {
+            outputQueue.push(operatorStack.pop());
           }
-          const operation = $(".set-operation").val();
-          let result = evaluateExpression(operation);
-          result.sort((a, b) => a - b);
-          $(".result").val(`{${result.join(",")}}`);
-        });
+
+          return outputQueue;
+        }
+
+        function shuntingYard(expression) {
+          let outputQueue = [];
+          let operatorStack = [];
+          let operators = {
+            "∩": { precedence: 2 },
+            "∪": { precedence: 2 },
+            "+": { precedence: 2 },
+            "-": { precedence: 2 },
+            "⊕": { precedence: 2 },
+            n: { precedence: 2 },
+            u: { precedence: 2 },
+            "×": { precedence: 2 },
+            "ꟲ": { precedence: 1 },
+            "(": { precedence: 1 },
+            ")": { precedence: 1 },
+          };
+
+          expression = expression.replace(/\s+/g, "");
+          expression = expression
+            .split(/([\+\-\∩\∪\⊕\×\(\)nuꟲ])/)
+            .filter(Boolean);
+
+          expression.forEach((token) => {
+            if (token === "(") {
+              operatorStack.push(token);
+            } else if (token === ")") {
+              while (operatorStack[operatorStack.length - 1] !== "(") {
+                outputQueue.push(operatorStack.pop());
+              }
+              operatorStack.pop();
+            } else if (token in operators) {
+              while (
+                operatorStack.length > 0 &&
+                operators[token].precedence <=
+                operators[operatorStack[operatorStack.length - 1]]
+                  .precedence
+              ) {
+                outputQueue.push(operatorStack.pop());
+              }
+              operatorStack.push(token);
+            } else {
+              outputQueue.push(token);
+            }
+          });
+
+          while (operatorStack.length > 0) {
+            outputQueue.push(operatorStack.pop());
+          }
+
+          return outputQueue;
+        }
+
+        function evaluateExpression(expression) {
+          let stack = [];
+          let operations = shuntingYard(expression);
+
+          operations.forEach((token) => {
+            if (token in sets) {
+              stack.push(sets[token]);
+            } else if (token === "ꟲ") {
+              let [x] = [stack.pop()];
+              x = complement(x);
+              stack.push(x);
+            } else {
+              let [y, x] = [stack.pop(), stack.pop()];
+              switch (token) {
+                case "∩":
+                  stack.push(intersection(x, y));
+                  break;
+                case "∪":
+                  stack.push(union(x, y));
+                  break;
+                case "+":
+                  stack.push(addition(x, y));
+                  break;
+                case "-":
+                  stack.push(subtraction(x, y));
+                  break;
+                case "⊕":
+                  stack.push(difference(x, y).concat(difference(y, x)));
+                  break;
+                case "×":
+                  x = x.map((value) => value.replace(/[\(\)]/g, ""));
+                  y = y.map((value) => value.replace(/[\(\)]/g, ""));
+                  if (x.length === 0 || y.length === 0) {
+                    stack.push([]);
+                    break;
+                  } else if (x.length === 1 && y.length === 1) {
+                    stack.push([`(${x},${y})`]);
+                    break;
+                  } else if (x.length === 1 && y.length > 1) {
+                    stack.push(y.map((value) => `(${x},${value})`));
+                    break;
+                  } else if (x.length > 1 && y.length === 1) {
+                    stack.push(x.map((value) => `(${value},${y})`));
+                    break;
+                  } else if (x.length > 1 && y.length > 1) {
+                    stack.push(
+                      x.reduce((acc, xValue) => {
+                        return [
+                          ...acc,
+                          ...y.map((yValue) => `(${xValue},${yValue})`),
+                        ];
+                      }, [])
+                    );
+                    break;
+                  }
+                  stack.push(cartesianProduct(x, y));
+                  break;
+
+                case "n":
+                  stack.push(intersection(x, y));
+                  break;
+                case "u":
+                  stack.push(union(x, y));
+                  break;
+              }
+            }
+          });
+          return stack.pop().join(",");
+        }
+
+        const operation = $(".set-operation").val();
+        let result = evaluateExpression(operation);
+        result = `{${result}}`;
+        $(".result").val(result);
       });
-    </script>
-  </body>
+    });
+  </script>
+</body>
+
 </html>

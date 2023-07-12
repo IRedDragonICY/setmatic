@@ -127,6 +127,33 @@
         background-color: #0062a3;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
       }
+      [data-title]:hover:after {
+        opacity: 1;
+        transition: all 0.1s ease 0.5s;
+        visibility: visible;
+      }
+
+      [data-title]:after {
+        content: attr(data-title);
+        background-color: #ffffff;
+        color: #111;
+        font-size: 12px;
+        position: absolute;
+        padding: 1px 5px 2px 5px;
+        bottom: -1.6em;
+        left: 100%;
+        white-space: nowrap;
+        box-shadow: 1px 1px 3px #222222;
+        opacity: 0;
+        border: 1px solid #111111;
+        z-index: 99999;
+        visibility: hidden;
+        border-radius: 5px;
+      }
+
+      [data-title] {
+        position: relative;
+      }
     </style>
   </head>
   <body>
@@ -183,14 +210,18 @@
       </div>
       <button id="addSet"><i class="fas fa-plus"></i> Tambah Himpunan</button>
       <div class="operations">
-        <button id="intersection">&#8745;</button>
-        <button id="union">&#8746;</button>
-        <button id="symmetricDifference">&#8853;</button>
-        <button id="addition">+</button>
-        <button id="subtraction">-</button>
-        <button id="cartesianProduct">&#215;</button>
-        <button id="difference">&#8726;</button>
-        <button id="complement">&#xA7F2;</button>
+        <button id="intersection" data-title="Intersection">&#8745;</button>
+        <button id="union" data-title="Union">&#8746;</button>
+        <button id="symmetricDifference" data-title="Symmetric Difference">
+          &#8853;
+        </button>
+        <button id="addition" data-title="Addition">+</button>
+        <button id="subtraction" data-title="Subtraction">-</button>
+        <button id="cartesianProduct" data-title="Cartesian Product">
+          &#215;
+        </button>
+        <button id="difference" data-title="Difference">&#8726;</button>
+        <button id="complement" data-title="Complement">&#xA7F2;</button>
       </div>
       <input type="text" placeholder="Set-Operation" class="set-operation" />
       <button id="calculate">Hitung</button>

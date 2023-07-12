@@ -203,14 +203,13 @@
     </div>
     <button id="addSet"><i class="fas fa-plus"></i> Tambah Himpunan</button>
     <div class="operations">
-      <button id="intersection" data-title="Intersection">&#8745;</button>
-      <button id="union" data-title="Union">&#8746;</button>
-      <button id="symmetricDifference" data-title="Symmetric Difference">&#8853;</button>
-      <button id="addition" data-title="Addition">+</button>
-      <button id="subtraction" data-title="Subtraction">-</button>
-      <button id="cartesianProduct" data-title="Cartesian Product">&#215;</button>
-      <button id="difference" data-title="Difference">&#8726;</button>
-      <button id="complement" data-title="Complement">&#xA7F2;</button>
+      <button id="intersection" data-title="Irisan">&#8745;</button>
+      <button id="union" data-title="Gabungan">&#8746;</button>
+      <button id="symmetricDifference" data-title="Beda Setangkup">&#8853;</button>
+      <button id="addition" data-title="Penjumlahan">+</button>
+      <button id="subtraction" data-title="Pengurangan">-</button>
+      <button id="cartesianProduct" data-title="Perkalian Kartesian">&#215;</button>
+      <button id="complement" data-title="Komplemen">&#xA7F2;</button>
     </div>
     <input type="text" placeholder="Set-Operation" class="set-operation" />
     <button id="calculate">Hitung</button>
@@ -273,7 +272,7 @@
       });
       $(document).on(
         "click",
-        "#intersection, #union, #addition, #symmetricDifference, #subtraction, #difference, #cartesianProduct, #complement",
+        "#intersection, #union, #addition, #symmetricDifference, #subtraction, #cartesianProduct, #complement",
         function () {
           const operation = $(this).text();
           const input = $(".set-operation");
@@ -307,39 +306,23 @@
           }
         });
 
+
         function intersection(a, b) {
-          let result = [];
-          a.forEach((value) => {
-            const minCount = Math.min(
-              a.filter((x) => x === value).length,
-              b.filter((x) => x === value).length
-            );
-            for (let i = 0; i < minCount; i++) {
-              result.push(value);
-            }
-          });
           const multiSet = {};
-          result.forEach((value) => {
-            if (multiSet[value]) {
-              multiSet[value]++;
-            } else {
-              multiSet[value] = 1;
+          a.forEach((value) => {
+            if (b.includes(value)) {
+              multiSet[value] = Math.min(
+                a.filter((x) => x === value).length,
+                b.filter((x) => x === value).length
+              );
             }
           });
-          const multiSetResult = Object.entries(multiSet).reduce(
-            (acc, [value, count]) => {
-              const minCount = Math.min(
-                a.filter((x) => x === String(value)).length,
-                b.filter((x) => x === String(value)).length
-              );
-              for (let i = 0; i < minCount; i++) {
-                acc.push(String(value));
-              }
-              return acc;
-            },
-            []
-          );
-          return multiSetResult;
+          return Object.entries(multiSet).reduce((acc, [value, count]) => {
+            for (let i = 0; i < count; i++) {
+              acc.push(String(value));
+            }
+            return acc;
+          }, []);
         }
 
         function union(a, b) {
@@ -439,11 +422,11 @@
           return result;
         }
         function complement(a) {
-          const universal = document
+          let universal = document
             .querySelector(".set-input")
             .value.split(",")
             .map((x) => x.trim());
-          return universal.filter((x) => !a.includes(x));
+          return subtraction(universal, a);
         }
 
         function difference(a, b) {
@@ -451,108 +434,64 @@
         }
 
         function shuntingYard(expression) {
-          let outputQueue = [];
-          let operatorStack = [];
-          let operators = {
-            "∩": { precedence: 2 },
-            "∪": { precedence: 2 },
-            "+": { precedence: 2 },
-            "-": { precedence: 2 },
-            "⊕": { precedence: 2 },
-            n: { precedence: 2 },
-            u: { precedence: 2 },
-            "×": { precedence: 2 },
-            "ꟲ": { precedence: 1 },
-            "(": { precedence: 1 },
-            ")": { precedence: 1 },
-          };
+  let outputQueue = [];
+  let operatorStack = [];
+  let operators = {
+    "∩": { precedence: 3 },
+    "∪": { precedence: 3 },
+    "+": { precedence: 3 },
+    "-": { precedence: 3 },
+    "⊕": { precedence: 3 },
+    n: { precedence: 3 },
+    u: { precedence: 3 },
+    "×": { precedence: 3 },
+    "(": { precedence: 2 },
+    ")": { precedence: 2 },
+    "ꟲ": { precedence: 1 },
+  };
 
-          expression = expression.replace(/\s+/g, "");
-          expression = expression
-            .split(/([\+\-\∩\∪\⊕\×\(\)nuꟲ])/)
-            .filter(Boolean);
+  expression = expression.replace(/\s+/g, "");
+  expression = expression.split(/([\+\-\∩\∪\⊕\×\(\)nuꟲ])/).filter(Boolean);
 
-          expression.forEach((token) => {
-            if (token === "(") {
-              operatorStack.push(token);
-            } else if (token === ")") {
-              while (operatorStack[operatorStack.length - 1] !== "(") {
-                outputQueue.push(operatorStack.pop());
-              }
-              operatorStack.pop();
-            } else if (token in operators) {
-              while (
-                operatorStack.length > 0 &&
-                operators[token].precedence <=
-                operators[operatorStack[operatorStack.length - 1]]
-                  .precedence
-              ) {
-                outputQueue.push(operatorStack.pop());
-              }
-              operatorStack.push(token);
-            } else {
-              outputQueue.push(token);
-            }
-          });
+  expression.forEach((token) => {
+    if (token in sets) {
+      if (operatorStack.length > 0 && operatorStack[operatorStack.length - 1] === 'ꟲ') {
+        operatorStack.splice(-1, 1);
+        outputQueue.push(token + 'ꟲ');
+      } else {
+        outputQueue.push(token);
+      }
+    } else if (token === '+' || token === '-') {
+      while (operatorStack.length > 0 && operatorStack[operatorStack.length - 1] !== "(" && operators[token].precedence <= operators[operatorStack[operatorStack.length - 1]].precedence) {
+        outputQueue.push(operatorStack.splice(-1, 1)[0]);
+      }
+      operatorStack.push(token);
+    } else if (token === 'ꟲ') {
+      operatorStack.push(token);
+    } else if (token === "(") {
+      operatorStack.push(token);
+    } else if (token === ")") {
+      while (operatorStack.length > 0 && operatorStack[operatorStack.length - 1] !== "(") {
+        outputQueue.push(operatorStack.splice(-1, 1)[0]);
+      }
+      operatorStack.splice(-1, 1);
+      if (operatorStack.length > 0 && operatorStack[operatorStack.length - 1] === 'ꟲ') {
+        operatorStack.splice(-1, 1);
+        outputQueue.push('ꟲ');
+      }
+    }
+  });
 
-          while (operatorStack.length > 0) {
-            outputQueue.push(operatorStack.pop());
-          }
+  while (operatorStack.length > 0) {
+    outputQueue.push(operatorStack.splice(-1, 1)[0]);
+  }
 
-          return outputQueue;
-        }
+  return outputQueue;
+}
 
-        function shuntingYard(expression) {
-          let outputQueue = [];
-          let operatorStack = [];
-          let operators = {
-            "∩": { precedence: 2 },
-            "∪": { precedence: 2 },
-            "+": { precedence: 2 },
-            "-": { precedence: 2 },
-            "⊕": { precedence: 2 },
-            n: { precedence: 2 },
-            u: { precedence: 2 },
-            "×": { precedence: 2 },
-            "ꟲ": { precedence: 1 },
-            "(": { precedence: 1 },
-            ")": { precedence: 1 },
-          };
 
-          expression = expression.replace(/\s+/g, "");
-          expression = expression
-            .split(/([\+\-\∩\∪\⊕\×\(\)nuꟲ])/)
-            .filter(Boolean);
 
-          expression.forEach((token) => {
-            if (token === "(") {
-              operatorStack.push(token);
-            } else if (token === ")") {
-              while (operatorStack[operatorStack.length - 1] !== "(") {
-                outputQueue.push(operatorStack.pop());
-              }
-              operatorStack.pop();
-            } else if (token in operators) {
-              while (
-                operatorStack.length > 0 &&
-                operators[token].precedence <=
-                operators[operatorStack[operatorStack.length - 1]]
-                  .precedence
-              ) {
-                outputQueue.push(operatorStack.pop());
-              }
-              operatorStack.push(token);
-            } else {
-              outputQueue.push(token);
-            }
-          });
 
-          while (operatorStack.length > 0) {
-            outputQueue.push(operatorStack.pop());
-          }
-
-          return outputQueue;
-        }
 
         function evaluateExpression(expression) {
           let stack = [];
@@ -624,7 +563,9 @@
           return stack.pop().join(",");
         }
 
-        const operation = $(".set-operation").val();
+        let operation = $(".set-operation").val();
+        operation = operation.replace(/ꟲ/g, "(ꟲ)");
+
         let result = evaluateExpression(operation);
         result = `{${result}}`;
         $(".result").val(result);

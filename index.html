@@ -451,6 +451,31 @@
                     stack.push(difference(x, y).concat(difference(y, x)));
                     break;
                   case "×":
+                    x = x.map((value) => value.replace(/[\(\)]/g, ""));
+                    y = y.map((value) => value.replace(/[\(\)]/g, ""));
+                    if (x.length === 0 || y.length === 0) {
+                      stack.push([]);
+                      break;
+                    } else if (x.length === 1 && y.length === 1) {
+                      stack.push([`(${x},${y})`]);
+                      break;
+                    } else if (x.length === 1 && y.length > 1) {
+                      stack.push(y.map((value) => `(${x},${value})`));
+                      break;
+                    } else if (x.length > 1 && y.length === 1) {
+                      stack.push(x.map((value) => `(${value},${y})`));
+                      break;
+                    } else if (x.length > 1 && y.length > 1) {
+                      stack.push(
+                        x.reduce((acc, xValue) => {
+                          return [
+                            ...acc,
+                            ...y.map((yValue) => `(${xValue},${yValue})`),
+                          ];
+                        }, [])
+                      );
+                      break;
+                    }
                     stack.push(cartesianProduct(x, y));
                     break;
                   case "'":

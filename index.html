@@ -181,7 +181,7 @@
           <i class="fa fa-trash" aria-hidden="true"></i>
         </button>
       </div>
-      <button id="addSet">Tambah Himpunan</button>
+      <button id="addSet"><i class="fas fa-plus"></i> Tambah Himpunan</button>
       <div class="operations">
         <button id="intersection">&#8745;</button>
         <button id="union">&#8746;</button>
@@ -239,6 +239,7 @@
               const set = value
                 .split(",")
                 .map((value) => String(value.trim()))
+                .filter((value) => value !== "")
                 .sort((a, b) => a - b);
               return set;
             })
@@ -250,7 +251,6 @@
             .join(", ");
           $(".set-input").first().val(set);
         });
-
         $(document).on(
           "click",
           "#intersection, #union, #addition, #symmetricDifference, #subtraction, #difference, #cartesianProduct, #complement",

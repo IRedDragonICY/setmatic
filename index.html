@@ -434,60 +434,60 @@
         }
 
         function shuntingYard(expression) {
-  let outputQueue = [];
-  let operatorStack = [];
-  let operators = {
-    "∩": { precedence: 3 },
-    "∪": { precedence: 3 },
-    "+": { precedence: 3 },
-    "-": { precedence: 3 },
-    "⊕": { precedence: 3 },
-    n: { precedence: 3 },
-    u: { precedence: 3 },
-    "×": { precedence: 3 },
-    "(": { precedence: 2 },
-    ")": { precedence: 2 },
-    "ꟲ": { precedence: 1 },
-  };
+          let outputQueue = [];
+          let operatorStack = [];
+          let operators = {
+            "∩": { precedence: 3 },
+            "∪": { precedence: 3 },
+            "+": { precedence: 3 },
+            "-": { precedence: 3 },
+            "⊕": { precedence: 3 },
+            n: { precedence: 3 },
+            u: { precedence: 3 },
+            "×": { precedence: 3 },
+            "(": { precedence: 2 },
+            ")": { precedence: 2 },
+            "ꟲ": { precedence: 1 },
+          };
 
-  expression = expression.replace(/\s+/g, "");
-  expression = expression.split(/([\+\-\∩\∪\⊕\×\(\)nuꟲ])/).filter(Boolean);
+          expression = expression.replace(/\s+/g, "");
+          expression = expression.split(/([\+\-\∩\∪\⊕\×\(\)nuꟲ])/).filter(Boolean);
 
-  expression.forEach((token) => {
-    if (token in sets) {
-      if (operatorStack.length > 0 && operatorStack[operatorStack.length - 1] === 'ꟲ') {
-        operatorStack.splice(-1, 1);
-        outputQueue.push(token + 'ꟲ');
-      } else {
-        outputQueue.push(token);
-      }
-    } else if (token === '+' || token === '-') {
-      while (operatorStack.length > 0 && operatorStack[operatorStack.length - 1] !== "(" && operators[token].precedence <= operators[operatorStack[operatorStack.length - 1]].precedence) {
-        outputQueue.push(operatorStack.splice(-1, 1)[0]);
-      }
-      operatorStack.push(token);
-    } else if (token === 'ꟲ') {
-      operatorStack.push(token);
-    } else if (token === "(") {
-      operatorStack.push(token);
-    } else if (token === ")") {
-      while (operatorStack.length > 0 && operatorStack[operatorStack.length - 1] !== "(") {
-        outputQueue.push(operatorStack.splice(-1, 1)[0]);
-      }
-      operatorStack.splice(-1, 1);
-      if (operatorStack.length > 0 && operatorStack[operatorStack.length - 1] === 'ꟲ') {
-        operatorStack.splice(-1, 1);
-        outputQueue.push('ꟲ');
-      }
-    }
-  });
+          expression.forEach((token) => {
+            if (token in sets) {
+              if (operatorStack.length > 0 && operatorStack[operatorStack.length - 1] === 'ꟲ') {
+                operatorStack.splice(-1, 1);
+                outputQueue.push(token + 'ꟲ');
+              } else {
+                outputQueue.push(token);
+              }
+            } else if (token === '+' || token === '-') {
+              while (operatorStack.length > 0 && operatorStack[operatorStack.length - 1] !== "(" && operators[token].precedence <= operators[operatorStack[operatorStack.length - 1]].precedence) {
+                outputQueue.push(operatorStack.splice(-1, 1)[0]);
+              }
+              operatorStack.push(token);
+            } else if (token === 'ꟲ') {
+              operatorStack.push(token);
+            } else if (token === "(") {
+              operatorStack.push(token);
+            } else if (token === ")") {
+              while (operatorStack.length > 0 && operatorStack[operatorStack.length - 1] !== "(") {
+                outputQueue.push(operatorStack.splice(-1, 1)[0]);
+              }
+              operatorStack.splice(-1, 1);
+              if (operatorStack.length > 0 && operatorStack[operatorStack.length - 1] === 'ꟲ') {
+                operatorStack.splice(-1, 1);
+                outputQueue.push('ꟲ');
+              }
+            }
+          });
 
-  while (operatorStack.length > 0) {
-    outputQueue.push(operatorStack.splice(-1, 1)[0]);
-  }
+          while (operatorStack.length > 0) {
+            outputQueue.push(operatorStack.splice(-1, 1)[0]);
+          }
 
-  return outputQueue;
-}
+          return outputQueue;
+        }
 
 
 

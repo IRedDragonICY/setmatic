@@ -26,6 +26,7 @@
         align-items: center;
         margin-bottom: 10px;
       }
+
       .set .char-input {
         width: 30px;
         margin: 0 10px;
@@ -132,15 +133,20 @@
     <div class="container">
       <div class="set">
         <input
-        type="text"
-        placeholder="Char Himpunan"
-        class="char-input"
-        maxlength="1"
-        value="U"
-        readonly
-      />
+          type="text"
+          placeholder="Char Himpunan"
+          class="char-input"
+          maxlength="1"
+          value="U"
+          readonly
+        />
         <span>{</span>
-        <input type="text" placeholder="Himpunan Semesta" class="set-input" readonly />
+        <input
+          type="text"
+          placeholder="Himpunan Semesta"
+          class="set-input"
+          readonly
+        />
         <span>}</span>
       </div>
       <div class="set">
@@ -151,7 +157,11 @@
           maxlength="1"
         />
         <span>{</span>
-        <input type="textarea" placeholder="Isi Himpunan" class="set-input" />
+        <input
+          type="textarea"
+          placeholder="Elemen Himpunan"
+          class="set-input"
+        />
         <span>}</span
         ><button class="removeSet">
           <i class="fa fa-trash" aria-hidden="true"></i>
@@ -165,7 +175,7 @@
           maxlength="1"
         />
         <span>{</span>
-        <input type="text" placeholder="Isi Himpunan" class="set-input" />
+        <input type="text" placeholder="Elemen Himpunan" class="set-input" />
         <span>}</span>
         <button class="removeSet">
           <i class="fa fa-trash" aria-hidden="true"></i>
@@ -190,9 +200,10 @@
       $(document).ready(() => {
         $("#addSet").click(() => {
           const set = $(
-            ` <div class="set"> <input type="text" placeholder="Char Himpunan" class="char-input" maxlength="1"/> <span>{</span> <input type="text" placeholder="Isi Himpunan" class="set-input" /> <span>}</span> <button class="removeSet"><i class="fa fa-trash" aria-hidden="true"></i></button> </div> `
+            ` <div class="set"> <input type="text" placeholder="Char Himpunan" class="char-input" maxlength="1"/> <span>{</span> <input type="text" placeholder="Elemen Himpunan" class="set-input" /> <span>}</span> <button class="removeSet"><i class="fa fa-trash" aria-hidden="true"></i></button> </div> `
           );
           $(".container").find("#addSet").before(set);
+          set.hide().slideDown(200);
           toggleRemoveButtons($(".removeSet"));
         });
 
@@ -201,8 +212,12 @@
             removeButtons.each((index, button) => {
               $(button).css("display", "block");
               $(button).click(() => {
-                $(button).parent().remove();
-                toggleRemoveButtons($(".removeSet"));
+                $(button)
+                  .parent()
+                  .fadeOut(200, function () {
+                    $(this).remove();
+                    toggleRemoveButtons($(".removeSet"));
+                  });
               });
             });
           } else {
@@ -211,46 +226,30 @@
             });
           }
         }
-
         toggleRemoveButtons($(".removeSet"));
 
-
-        // menampilkan  himpunan semesta (U) dengan union seluruh himpunan yang ada
-        // menampilkan secara real time pada bagian ini
-        /*
-        <div class="set">
-        <input
-        type="text"
-        placeholder="Char Himpunan"
-        class="char-input"
-        maxlength="1"
-        value="U"
-        readonly
-      />
-        <span>{</span>
-        <input type="text" placeholder="Himpunan Semesta" class="set-input" readonly />
-        <span>}</span>
-      </div>
-        */
-
         $(document).on("change input", ".set-input", () => {
-  const values = $(".set-input")
-    .not($(".set-input").first())
-    .map((index, input) => {
-      const value = $(input).val().trim();
-      if (!value) {
-        return null;
-      }
-      const set = value.split(",").map((value) => String(value.trim())).sort((a, b) => a - b);
-      return set;
-    })
-    .get()
-    .filter((value) => value !== null);
-  let set = [].concat(...values).sort((a, b) => a - b).join(", ");
-  $(".set-input").first().val(set);
-});
-
-  
+          const values = $(".set-input")
+            .not($(".set-input").first())
+            .map((index, input) => {
+              const value = $(input).val().trim();
+              if (!value) {
+                return null;
+              }
+              const set = value
+                .split(",")
+                .map((value) => String(value.trim()))
+                .sort((a, b) => a - b);
+              return set;
+            })
+            .get()
+            .filter((value) => value !== null);
+          let set = []
+            .concat(...values)
+            .sort((a, b) => a - b)
+            .join(", ");
+          $(".set-input").first().val(set);
+        });
 
         $(document).on(
           "click",

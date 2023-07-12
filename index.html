@@ -132,6 +132,19 @@
     <div class="container">
       <div class="set">
         <input
+        type="text"
+        placeholder="Char Himpunan"
+        class="char-input"
+        maxlength="1"
+        value="U"
+        readonly
+      />
+        <span>{</span>
+        <input type="text" placeholder="Himpunan Semesta" class="set-input" readonly />
+        <span>}</span>
+      </div>
+      <div class="set">
+        <input
           type="text"
           placeholder="Char Himpunan"
           class="char-input"
@@ -200,6 +213,44 @@
         }
 
         toggleRemoveButtons($(".removeSet"));
+
+
+        // menampilkan  himpunan semesta (U) dengan union seluruh himpunan yang ada
+        // menampilkan secara real time pada bagian ini
+        /*
+        <div class="set">
+        <input
+        type="text"
+        placeholder="Char Himpunan"
+        class="char-input"
+        maxlength="1"
+        value="U"
+        readonly
+      />
+        <span>{</span>
+        <input type="text" placeholder="Himpunan Semesta" class="set-input" readonly />
+        <span>}</span>
+      </div>
+        */
+
+        $(document).on("change input", ".set-input", () => {
+  const values = $(".set-input")
+    .not($(".set-input").first())
+    .map((index, input) => {
+      const value = $(input).val().trim();
+      if (!value) {
+        return null;
+      }
+      const set = value.split(",").map((value) => String(value.trim())).sort((a, b) => a - b);
+      return set;
+    })
+    .get()
+    .filter((value) => value !== null);
+  let set = [].concat(...values).sort((a, b) => a - b).join(", ");
+  $(".set-input").first().val(set);
+});
+
+  
 
         $(document).on(
           "click",

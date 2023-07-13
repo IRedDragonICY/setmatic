@@ -1,0 +1,171 @@
+body {
+    background-color: #f5f5f5;
+    font-family: Arial, sans-serif;
+  }
+
+  .container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .set {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .set .char-input {
+    width: 30px;
+    margin: 0 10px;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    font-size: 16px;
+    padding: 5px;
+    text-align: center;
+  }
+
+  .set .set-input {
+    margin: 0 10px;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    font-size: 16px;
+    padding: 5px;
+  }
+
+  .set button:hover {
+    color: #333;
+  }
+
+  .removeSet {
+    background-color: #ff4d4d;
+    border: none;
+
+    color: #ffffff;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .removeSet:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .removeSet i {
+    margin-right: 5px;
+  }
+
+  .removeSet span {
+    display: none;
+  }
+
+  .removeSet:hover span {
+    display: inline;
+  }
+
+  .removeSet:hover i {
+    display: none;
+  }
+
+  .operations {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+
+  .operations button {
+    background-color: #fff;
+    border: none;
+    color: #999;
+    font-size: 24px;
+    cursor: pointer;
+    margin: 0 10px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .operations button:hover {
+    color: #333;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .set-operation {
+    width: 100%;
+    margin-bottom: 10px;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    font-size: 16px;
+    padding: 5px;
+  }
+
+  .result {
+    width: 100%;
+    margin-bottom: 10px;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    font-size: 16px;
+    padding: 5px;
+    text-align: center;
+  }
+
+  button {
+    background-color: #007acc;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+
+  button#addSet {
+    background-color: #4caf50;
+  }
+
+  button:hover {
+    background-color: #0062a3;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+
+  [data-title]:hover:after {
+    opacity: 1;
+    transition: all 0.1s ease 0.5s;
+    visibility: visible;
+  }
+
+  [data-title]:after {
+    content: attr(data-title);
+    background-color: #ffffff;
+    color: #111;
+    font-size: 12px;
+    position: absolute;
+    padding: 1px 5px 2px 5px;
+    bottom: -1.6em;
+    left: 100%;
+    white-space: nowrap;
+    box-shadow: 1px 1px 3px #222222;
+    opacity: 0;
+    border: 1px solid #111111;
+    z-index: 99999;
+    visibility: hidden;
+    border-radius: 5px;
+  }
+
+  [data-title] {
+    position: relative;
+  }
+
+  .logo {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    /* memperbesar ukuran */
+    transform: scale(1.2);
+  }

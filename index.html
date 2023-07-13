@@ -447,53 +447,52 @@
             let outputQueue = [];
             let operatorStack = [];
             let operators = {
-              "∩": { precedence: 3 },
-              "∪": { precedence: 3 },
-              "+": { precedence: 3 },
-              "-": { precedence: 3 },
-              "⊕": { precedence: 3 },
-              n: { precedence: 3 },
-              u: { precedence: 3 },
-              "×": { precedence: 0 },
-              "(": { precedence: 2 },
-              ")": { precedence: 2 },
-              "ꟲ": { precedence: 1 },
+              "∩": { precedence: 2 },
+              "∪": { precedence: 2 },
+              "+": { precedence: 2 },
+              "-": { precedence: 2 },
+              "⊕": { precedence: 2 },
+              n: { precedence: 2 },
+              u: { precedence: 2 },
+              "×": { precedence: 2 },
+              "ꟲ" : { precedence: 1 },
+              "(": { precedence: 1 },
+              ")": { precedence: 1 },
             };
 
             expression = expression.replace(/\s+/g, "");
-            expression = expression.split(/([\+\-\∩\∪\⊕\×\(\)nuꟲ])/).filter(Boolean);
+            expression = expression
+              .split(/([\+\-\∩\∪\⊕\×\ꟲ\(\)nu])/)
+              .filter(Boolean);
 
             expression.forEach((token) => {
-              if (token in sets) {
-                if (operatorStack.length > 0 && operatorStack[operatorStack.length - 1] === 'ꟲ') {
-                  operatorStack.splice(-1, 1);
-                  outputQueue.push(token + 'ꟲ');
-                } else {
-                  outputQueue.push(token);
-                }
-              } else if (token === '+' || token === '-') {
-                while (operatorStack.length > 0 && operatorStack[operatorStack.length - 1] !== "(" && operators[token].precedence <= operators[operatorStack[operatorStack.length - 1]].precedence) {
-                  outputQueue.push(operatorStack.splice(-1, 1)[0]);
-                }
-                operatorStack.push(token);
-              } else if (token === 'ꟲ') {
-                operatorStack.push(token);
-              } else if (token === "(") {
+              if (token === "ꟲ") {
+                operatorStack.push("ꟲ");
+              } else
+              if (token === "(") {
                 operatorStack.push(token);
               } else if (token === ")") {
-                while (operatorStack.length > 0 && operatorStack[operatorStack.length - 1] !== "(") {
-                  outputQueue.push(operatorStack.splice(-1, 1)[0]);
+                while (operatorStack[operatorStack.length - 1] !== "(") {
+                  outputQueue.push(operatorStack.pop());
                 }
-                operatorStack.splice(-1, 1);
-                if (operatorStack.length > 0 && operatorStack[operatorStack.length - 1] === 'ꟲ') {
-                  operatorStack.splice(-1, 1);
-                  outputQueue.push('ꟲ');
+                operatorStack.pop();
+              } else if (token in operators) {
+                while (
+                  operatorStack.length > 0 &&
+                  operators[token].precedence <=
+                    operators[operatorStack[operatorStack.length - 1]]
+                      .precedence
+                ) {
+                  outputQueue.push(operatorStack.pop());
                 }
+                operatorStack.push(token);
+              } else {
+                outputQueue.push(token);
               }
             });
 
             while (operatorStack.length > 0) {
-              outputQueue.push(operatorStack.splice(-1, 1)[0]);
+              outputQueue.push(operatorStack.pop());
             }
 
             return outputQueue;

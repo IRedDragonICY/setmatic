@@ -268,14 +268,14 @@
                 .split(",")
                 .map((value) => String(value.trim()))
                 .filter((value) => value !== "")
-                .sort((a, b) => a - b);
+                .sort((a, b) => parseInt(a) - parseInt(b));
               return set;
             })
             .get()
             .filter((value) => value !== null);
           let set = []
             .concat(...values)
-            .sort((a, b) => a - b)
+            .sort((a, b) => parseInt(a) - parseInt(b))
             .join(", ");
           $(".set-input").first().val(set);
         });
@@ -428,6 +428,7 @@
                 result.push(`(${aValue},${bValue})`);
               });
             });
+            console.log(result);
             return result;
           }
           function complement(a) {
@@ -453,7 +454,7 @@
               "⊕": { precedence: 3 },
               n: { precedence: 3 },
               u: { precedence: 3 },
-              "×": { precedence: 3 },
+              "×": { precedence: 0 },
               "(": { precedence: 2 },
               ")": { precedence: 2 },
               "ꟲ": { precedence: 1 },

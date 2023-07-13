@@ -8,6 +8,8 @@
 ![GitHub all releases](https://img.shields.io/github/downloads/IRedDragonICY/MATDIS-Project/total?style=flat-square)
 [![Visitors](https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2FIRedDragonICY%2FMATDIS-Project&label=Visitors&countColor=%23263759)](https://visitorbadge.io/status?path=https%3A%2F%2Fgithub.com%2FIRedDragonICY%2FMATDIS-Project)
 
+[EN](https://github.com/IRedDragonICY/MATDIS-Project/blob/1.0/README.md)
+[ID](https://github.com/IRedDragonICY/MATDIS-Project/blob/1.0/README_ID.md)
 
 SetMatic is a set calculator program used to perform set operations such as intersection, union, addition, subtraction, cartesian product, and symmetric difference. This program was developed by Mohammad Farid Hendianto as an assignment for Ahmad Dahlan University. This project is for educational purposes only.
 
@@ -55,7 +57,6 @@ To build SetMatic, you need to have npm and electronjs installed on your system.
 7. The built program will be located in the `out` folder.
 
 ## Usage
-<!-- Jelaskan bahwa ada dua aplikasi yaitu aplikasi web dan aplikasi -->
 SetMatic has two versions: web and desktop. The web version can be accessed at https://setmatic.vercel.app The desktop version can be downloaded from the releases page of this repository.
 
 ## Contribution

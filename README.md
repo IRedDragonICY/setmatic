@@ -5,7 +5,8 @@
 # SetMatic
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/IRedDragonICY/MATDIS-Project?style=flat-square)
 ![GitHub all releases](https://img.shields.io/github/downloads/IRedDragonICY/MATDIS-Project/total?style=flat-square)
-![GitHub repo views](https://img.shields.io/github/views/IRedDragonICY/MATDIS-Project?style=flat-square)
+[![Visitors](https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2FIRedDragonICY%2FMATDIS-Project&label=Visitors&countColor=%23263759)](https://visitorbadge.io/status?path=https%3A%2F%2Fgithub.com%2FIRedDragonICY%2FMATDIS-Project)
+
 
 SetMatic is a set calculator program used to perform set operations such as intersection, union, addition, subtraction, cartesian product, and symmetric difference. This program was developed by Mohammad Farid Hendianto as an assignment for Ahmad Dahlan University. This project is for educational purposes only.
 Lecturer: Nur Rochman Dyah P.A, S.T., M.Kom

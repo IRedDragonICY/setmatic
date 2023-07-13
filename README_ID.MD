@@ -8,8 +8,8 @@
 ![GitHub all releases](https://img.shields.io/github/downloads/IRedDragonICY/MATDIS-Project/total?style=flat-square)
 [![Visitors](https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2FIRedDragonICY%2FMATDIS-Project&label=Visitors&countColor=%23263759)](https://visitorbadge.io/status?path=https%3A%2F%2Fgithub.com%2FIRedDragonICY%2FMATDIS-Project)
 
-[EN](https://github.com/IRedDragonICY/MATDIS-Project/blob/1.0/README.md)
-[ID](https://github.com/IRedDragonICY/MATDIS-Project/blob/1.0/README_ID.md)
+[EN](https://github.com/IRedDragonICY/MATDIS-Project/blob/main/README.md)
+[ID](https://github.com/IRedDragonICY/MATDIS-Project/blob/main/README_ID.MD)
 
 SetMatic adalah program kalkulator himpunan yang digunakan untuk melakukan operasi himpunan seperti irisan, gabungan, penambahan, pengurangan, produk kartesian, dan selisih simetris. Program ini dikembangkan oleh Mohammad Farid Hendianto sebagai tugas untuk Universitas Ahmad Dahlan. Proyek ini hanya untuk tujuan pendidikan.
 

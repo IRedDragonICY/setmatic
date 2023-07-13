@@ -57,7 +57,6 @@ Untuk membuat SetMatic, Anda perlu memiliki npm dan electronjs terinstal di sist
 7. Program yang dibangun akan berada di folder `out`.
 
 ## Penggunaan
-<!-- Jelaskan bahwa ada dua aplikasi yaitu aplikasi web dan aplikasi -->
 SetMatic memiliki dua versi: web dan desktop. Versi web dapat diakses di https://setmatic.vercel.app Versi desktop dapat diunduh dari halaman rilis repositori ini.
 
 ## Kontribusi

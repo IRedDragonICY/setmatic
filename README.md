@@ -3,6 +3,8 @@
 </p>
 
 # SetMatic
+<!-- license -->
+![GitHub](https://img.shields.io/github/license/IRedDragonICY/MATDIS-Project?style=flat-square)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/IRedDragonICY/MATDIS-Project?style=flat-square)
 ![GitHub all releases](https://img.shields.io/github/downloads/IRedDragonICY/MATDIS-Project/total?style=flat-square)
 [![Visitors](https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2FIRedDragonICY%2FMATDIS-Project&label=Visitors&countColor=%23263759)](https://visitorbadge.io/status?path=https%3A%2F%2Fgithub.com%2FIRedDragonICY%2FMATDIS-Project)

@@ -173,11 +173,22 @@
     [data-title] {
       position: relative;
     }
+
+    .logo {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+      /* memperbesar ukuran */
+      transform: scale(1.2);
+    }
   </style>
 </head>
 
 <body>
   <div class="container">
+    <div class="logo">
+      <img src="./lib/imgs/icon/icon.png" alt="logo" width="100px" height="100px">
+    </div>
     <div class="set">
       <input type="text" placeholder="Char Himpunan" class="char-input" maxlength="1" value="U" readonly />
       <span>{</span>

@@ -1,8 +1,8 @@
 {
   "name": "matdis-project",
-  "version": "0.0.1",
+  "version": "0.8",
   "description": "Kalkulator Himpunan",
-  "main": "index.js",
+  "main": "./lib/js/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron-forge start",

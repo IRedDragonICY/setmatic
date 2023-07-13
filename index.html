@@ -2,30 +2,33 @@
 <html>
 
 <head>
-  <title>Kalkulator Himpunan</title>
+  <title>SetMatic</title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" type="image/x-icon" href="./lib/imgs/icon/icon.ico" />
-  <script src="./lib/js/jquery-3.7.0.min.js"></script>
-  <script src="./lib/js/font-awesome.js"></script>
-  <script src="./lib/js/sets.js"></script>
   <href rel="stylesheet" href="./lib/CSS/font-awesome.css"></href>
   <link rel="stylesheet" href="./lib/CSS/style.css" />
+  <script src="./lib/js/jquery.js"></script>
+  <script src="./lib/js/font-awesome.js"></script>
+  <script src="./lib/js/sets.js"></script>
 </head>
 
 <body>
   <div class="container">
+    <div class="title">
+      <h1>SetMatic</h1>
+    </div>
     <div class="logo">
       <img src="./lib/imgs/icon/icon.png" alt="logo" width="100px" height="100px">
     </div>
     <div class="set">
-      <input type="text" placeholder="Char Himpunan" class="char-input" maxlength="1" value="U" readonly />
+      <input type="text" placeholder="Char" class="char-input" maxlength="1" value="U" readonly />
       <span>{</span>
       <input type="text" placeholder="Himpunan Semesta" class="set-input" readonly />
       <span>}</span>
     </div>
     <div class="set">
-      <input type="text" placeholder="Char Himpunan" class="char-input" maxlength="1" pattern="[a-zA-Z]" />
+      <input type="text" placeholder="Char" class="char-input" maxlength="1" pattern="[a-zA-Z]" />
       <span>{</span>
       <input type="textarea" placeholder="Elemen Himpunan" class="set-input" />
       <span>}</span><button class="removeSet">
@@ -33,7 +36,7 @@
       </button>
     </div>
     <div class="set">
-      <input type="text" placeholder="Char Himpunan" class="char-input" maxlength="1" pattern="[a-zA-Z]" />
+      <input type="text" placeholder="Char" class="char-input" maxlength="1" pattern="[a-zA-Z]" />
       <span>{</span>
       <input type="text" placeholder="Elemen Himpunan" class="set-input" />
       <span>}</span>

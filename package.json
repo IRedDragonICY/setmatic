@@ -1,6 +1,6 @@
 {
-  "name": "SetMatic",
-  "version": "1.0.0",
+  "name": "setmatic",
+  "version": "1.0.1",
   "description": "Calculator for Set Theory",
   "main": "./lib/js/index.js",
   "scripts": {
